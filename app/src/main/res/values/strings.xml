@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TheMazeRunner</string>
+    <string name="title_activity_kaart">Map</string>
+</resources>
