@@ -178,31 +178,18 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         polyline.setJointType(JointType.ROUND);
     }
 
-    class firstTask extends TimerTask {
-        @Override
-        public void run() {
-
-
-            if(afstand(huidigeLocatie, new LatLng(51.17039054011921, 4.142726591135215 )) < 5) {
-            polyline1a.setVisible(false);
-            polyline1b.setVisible(true);
-            }
-
-
-
-
-        }
-    };
     public double afstand(LatLng p1, LatLng p2){
-        double R = 6378137; // Earth’s mean radius in meter
+        double R = 6371;
         double dLat = toRadians(p2.latitude - p1.latitude);
-        double dLong = toRadians(p2.latitude - p1.latitude);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(toRadians(p1.latitude)) * Math.cos(toRadians(p2.latitude)) *
-                        Math.sin(dLong / 2) * Math.sin(dLong / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = R * c;
-        return d;
+        double dLong = toRadians(p2.longitude - p1.longitude);
+        double p1Lat = toRadians(p1.latitude);
+        double p2Lat = toRadians(p2.latitude);
+        double a = haversin(dLat) + Math.cos(p1Lat) * Math.cos(p2Lat) * haversin(dLong);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     };
+    public  static  double haversin(double val){
+        return Math.pow(Math.sin(val/2), 2);
+    }
 
 }
