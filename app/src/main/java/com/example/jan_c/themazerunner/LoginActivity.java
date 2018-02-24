@@ -61,6 +61,9 @@ public class LoginActivity extends AppCompatActivity{
         passwoordEditText = (EditText) findViewById(R.id.password);
 
     }
+
+
+
     class inlogButtonClick implements View.OnClickListener {
         public void onClick(View view) {
 if(Objects.equals(leeg ,emailEditText.getText().toString()) | Objects.equals(leeg,passwoordEditText.getText().toString())){
@@ -78,6 +81,10 @@ if(Objects.equals(leeg ,emailEditText.getText().toString()) | Objects.equals(lee
 }
         }
     }
+
+
+
+
 }
 
 

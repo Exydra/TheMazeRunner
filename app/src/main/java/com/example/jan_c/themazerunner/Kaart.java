@@ -3,6 +3,7 @@ package com.example.jan_c.themazerunner;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -11,6 +12,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +44,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private LatLng huidigeLocatie;
     private Polyline polyline1a;
     private Polyline polyline1b;
+    private Button RoutesButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +53,8 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        RoutesButton = (Button) findViewById(R.id.RoutesButton);
+        RoutesButton.setOnClickListener(new routesButtonClick());
     }
 
 
@@ -191,5 +196,10 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     public  static  double haversin(double val){
         return Math.pow(Math.sin(val/2), 2);
     }
-
+    class routesButtonClick implements View.OnClickListener {
+        public void onClick(View view) {
+            Intent Routes = new Intent(getApplicationContext(),RoutesKiezen.class);
+            startActivity(Routes);
+        }
+    }
 }
