@@ -8,12 +8,14 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,6 +40,7 @@ import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
 
 public class Kaart extends FragmentActivity implements OnMapReadyCallback {
+    public double counter = 0;
     private LatLng CurrentLocation = new LatLng(51.161891212585495, 4.136264966509771);
     private GoogleMap mMap;
     private Timer timer;
@@ -45,6 +48,8 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private Polyline polyline1a;
     private Polyline polyline1b;
     private Button RoutesButton;
+    private TextView timerText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +58,12 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        RoutesButton = (Button) findViewById(R.id.RoutesButton);
+        RoutesButton = findViewById(R.id.RoutesButton);
         RoutesButton.setOnClickListener(new routesButtonClick());
+
+
+
+
     }
 
 
@@ -69,6 +78,8 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+
         try {
             mMap = googleMap;
 
@@ -143,15 +154,17 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                 mMap.setMyLocationEnabled(true);
             }
-            LocationManager locationManager = (LocationManager)
-                    getSystemService(Context.LOCATION_SERVICE);
+
+            // camera positie aanpassen
+            LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
 
-            Location myLocation = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
+            Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
             huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(huidigeLocatie, 20));
+
+
+
 
         } catch (Exception Locatie){
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
@@ -175,6 +188,17 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             AlertDialog alert11 = builder1.create();
             alert11.show();
         }
+
+
+        final TextView timerText = findViewById(R.id.timerTekst);
+        new CountDownTimer(1000000000, 1000){
+            public void onTick(long millisUntilFinished){
+                timerText.setText(String.valueOf(counter));
+                counter += 1;
+            }
+            public void onFinish(){
+            }
+        }.start();
     }
 
     private void stylePolyline(Polyline polyline) {
@@ -182,6 +206,8 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         polyline.setColor(rgb(146,46,76));
         polyline.setJointType(JointType.ROUND);
     }
+
+
 
     public double afstand(LatLng p1, LatLng p2){
         double R = 6371;
@@ -192,7 +218,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         double a = haversin(dLat) + Math.cos(p1Lat) * Math.cos(p2Lat) * haversin(dLong);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         return R * c;
-    };
+    }
     public  static  double haversin(double val){
         return Math.pow(Math.sin(val/2), 2);
     }
@@ -203,3 +229,5 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         }
     }
 }
+
+

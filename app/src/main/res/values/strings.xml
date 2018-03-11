@@ -15,4 +15,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="volgende_punt">Volgende punt:</string>
+    <string name="_1254_meter">1254 meter</string>
+    <string name="routes">Routes</string>
+    <string name="textview">TextView</string>
+    <string name="_2km">2km</string>
+    <string name="_5km">5km</string>
+    <string name="_10km">10km</string>
+    <string name="_1km">1km</string>
 </resources>
