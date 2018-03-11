@@ -191,7 +191,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
 
         final TextView timerText = findViewById(R.id.timerTekst);
-        new CountDownTimer(1000000000, 1000){
+        new CountDownTimer(100000000, 1000){
             public void onTick(long millisUntilFinished){
                 timerText.setText(String.valueOf(counter));
                 counter += 1;
