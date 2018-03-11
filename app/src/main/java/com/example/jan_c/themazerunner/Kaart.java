@@ -8,10 +8,10 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -21,20 +21,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CustomCap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.RoundCap;
-import com.google.android.gms.tasks.Task;
 
-import java.text.DecimalFormat;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
@@ -47,6 +41,13 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private LatLng huidigeLocatie;
     private Polyline polyline1a;
     private Polyline polyline1b;
+    private Polyline polilyne1c;
+    private Polyline polilyne1d;
+    private Marker MarkerStart;
+    private  Marker MarkerStation;
+    private Marker MarkerSTEM;
+    private  Marker MarkerMarkt;
+    private  Marker MarkerFinish;
     private Button RoutesButton;
     private TextView timerText;
 
@@ -77,27 +78,27 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
 
 
         try {
             mMap = googleMap;
 
-            mMap.addMarker(new MarkerOptions().position(new LatLng(51.161891212585495, 4.136264966509771))
+            MarkerStart = mMap.addMarker(new MarkerOptions().position(new LatLng(51.161891212585495, 4.136264966509771))
                     .title("Start")
             );
-            mMap.addMarker(new MarkerOptions().position(new LatLng(51.17039054011921, 4.142726591135215))
+            MarkerStation = mMap.addMarker(new MarkerOptions().position(new LatLng(51.17039054011921, 4.142726591135215))
                     .title("Station")
             );
-            mMap.addMarker(new MarkerOptions().position(new LatLng(51.16623048764471, 4.144357827015028))
+            MarkerSTEM = mMap.addMarker(new MarkerOptions().position(new LatLng(51.16623048764471, 4.144357827015028))
                     .title("STEM")
                     .visible(false)
             );
-            mMap.addMarker(new MarkerOptions().position(new LatLng(51.16476175829673, 4.14110284877097))
+            MarkerMarkt = mMap.addMarker(new MarkerOptions().position(new LatLng(51.16476175829673, 4.14110284877097))
                     .title("Markt")
                     .visible(false)
             );
-            mMap.addMarker(new MarkerOptions().position(new LatLng(51.161891212585495, 4.136264966509771))
+            MarkerFinish = mMap.addMarker(new MarkerOptions().position(new LatLng(51.161891212585495, 4.136264966509771))
                     .title("Finish")
                     .visible(false)
             );
@@ -127,7 +128,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                             new LatLng(51.16623048764471, 4.144357827015028))
                     .visible(false)
             );
-            Polyline polilyne1c = mMap.addPolyline(new PolylineOptions()
+             polilyne1c = mMap.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(new LatLng(51.16623048764471, 4.144357827015028),
                             new LatLng(51.165503423384166, 4.1440817945931485),
@@ -137,7 +138,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                             new LatLng(51.16476175829673, 4.14110284877097))
                     .visible(false)
             );
-            Polyline polilyne1d = mMap.addPolyline(new PolylineOptions()
+             polilyne1d = mMap.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .add(new LatLng(51.16476175829673, 4.14110284877097),
                             new LatLng(51.163863502158144, 4.139504604950162),
@@ -161,7 +162,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
             Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
             huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(huidigeLocatie, 20));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(huidigeLocatie, 18));
 
 
 
@@ -195,6 +196,63 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             public void onTick(long millisUntilFinished){
                 timerText.setText(String.valueOf(counter));
                 counter += 1;
+                try{
+                if ((ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                    mMap.setMyLocationEnabled(true);
+                }
+
+                // camera positie aanpassen
+                LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+
+                Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(huidigeLocatie, 18));
+                if(afstand(huidigeLocatie, MarkerStation.getPosition())<0.005){
+                    polyline1a.setVisible(false);
+                    polyline1b.setVisible(true);
+                    MarkerStart.setVisible(false);
+                    MarkerStation.setVisible(false);
+                    MarkerSTEM.setVisible(true);
+                }
+                    if(afstand(huidigeLocatie, MarkerSTEM.getPosition())<0.005){
+                        polyline1b.setVisible(false);
+                        polilyne1c.setVisible(true);
+                        MarkerSTEM.setVisible(false);
+                        MarkerMarkt.setVisible(true);
+                    }
+                    if(afstand(huidigeLocatie, MarkerMarkt.getPosition())<0.005){
+                        polilyne1c.setVisible(false);
+                        polilyne1d.setVisible(true);
+                        MarkerMarkt.setVisible(false);
+                        MarkerFinish.setVisible(true);
+                    }
+                    if(afstand(huidigeLocatie, MarkerFinish.getPosition())<0.005){
+                        polilyne1d.setVisible(false);
+                    }
+
+            } catch (Exception Locatie){
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
+                builder1.setMessage("Er is geen locatie beschikbaar");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }
             }
             public void onFinish(){
             }
