@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -162,11 +163,12 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
             Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
             huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(huidigeLocatie, 18));
-
-
-
-
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(huidigeLocatie)
+                    .zoom(18)
+                    .bearing(myLocation.getBearing())
+                    .build();
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         } catch (Exception Locatie){
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setMessage("Er is geen locatie beschikbaar");
@@ -207,7 +209,12 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
                 Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
                 huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(huidigeLocatie, 18));
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(huidigeLocatie)
+                            .zoom(18)
+                            .bearing(myLocation.getBearing())
+                            .build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 if(afstand(huidigeLocatie, MarkerStation.getPosition())<0.005){
                     polyline1a.setVisible(false);
                     polyline1b.setVisible(true);
