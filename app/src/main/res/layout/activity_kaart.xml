@@ -16,7 +16,7 @@
         android:layout_width="388dp"
         android:layout_height="374dp"
         android:layout_margin="0dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="48dp"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintTop_toTopOf="parent"
         tools:context="com.example.jan_c.themazerunner.Kaart" />
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.794" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/afstandTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/_1254_meter"
@@ -69,4 +69,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.944" />
+
+    <Button
+        android:id="@+id/Pauzebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bekijk"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833" />
 </android.support.constraint.ConstraintLayout>

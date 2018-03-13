@@ -29,16 +29,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.Timer;
-
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
 
 public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     public double counter = 0;
-    private LatLng CurrentLocation = new LatLng(51.161891212585495, 4.136264966509771);
     private GoogleMap mMap;
-    private Timer timer;
     private LatLng huidigeLocatie;
     private Polyline polyline1a;
     private Polyline polyline1b;
@@ -50,8 +46,11 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private  Marker MarkerMarkt;
     private  Marker MarkerFinish;
     private Button RoutesButton;
-    private TextView timerText;
-
+    private TextView timerTextvieuw;
+    private Button PauzeButton;
+    private CountDownTimer timer;
+    private Boolean gepauzeerd = false;
+    private TextView afstandTextview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +61,8 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         RoutesButton = findViewById(R.id.RoutesButton);
         RoutesButton.setOnClickListener(new routesButtonClick());
-
-
-
-
+        PauzeButton = findViewById(R.id.Pauzebutton);
+        PauzeButton.setOnClickListener(new PauzeButtonClick());
     }
 
 
@@ -194,7 +191,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
 
         final TextView timerText = findViewById(R.id.timerTekst);
-        new CountDownTimer(1000000000, 1000){
+       timer = new CountDownTimer(1000000000, 1000){
             public void onTick(long millisUntilFinished){
                 timerText.setText(String.valueOf(counter));
                 counter += 1;
@@ -291,6 +288,26 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         public void onClick(View view) {
             Intent Routes = new Intent(getApplicationContext(),RoutesKiezen.class);
             startActivity(Routes);
+        }
+    }
+    class PauzeButtonClick implements View.OnClickListener{
+        public void onClick(View view) {
+            if(!gepauzeerd)
+            {
+                timer.cancel();
+                gepauzeerd = true;
+                PauzeButton.setText("Hervatten");
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(huidigeLocatie)
+                        .zoom(13)
+                        .build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+            else {
+                timer.start();
+                gepauzeerd = false;
+                PauzeButton.setText("Bekijk");
+            }
         }
     }
 }
