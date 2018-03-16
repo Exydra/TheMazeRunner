@@ -201,17 +201,21 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                 }
 
                 // camera positie aanpassen
-                LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
+                    LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                    Criteria criteria = new Criteria();
 
-                Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-                huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(huidigeLocatie)
-                            .zoom(18)
-                            .bearing(myLocation.getBearing())
-                            .build();
-                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                    huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                    if (!gepauzeerd) {
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(huidigeLocatie)
+                                .zoom(18)
+                                .bearing(myLocation.getBearing())
+                                .build();
+                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+
+
                 if(afstand(huidigeLocatie, MarkerStation.getPosition())<0.005){
                     polyline1a.setVisible(false);
                     polyline1b.setVisible(true);
@@ -294,7 +298,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         public void onClick(View view) {
             if(!gepauzeerd)
             {
-                timer.cancel();
                 gepauzeerd = true;
                 PauzeButton.setText("Hervatten");
                 CameraPosition cameraPosition = new CameraPosition.Builder()
