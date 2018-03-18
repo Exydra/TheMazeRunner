@@ -22,12 +22,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
@@ -51,6 +58,14 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private CountDownTimer timer;
     private Boolean gepauzeerd = false;
     private TextView afstandTextview;
+    private  ArrayList<LatLng> GepaseerdePunten;
+    private  Polyline Gepaseerd;
+    private static final int PATTERN_GAP_LENGTH_PX = 20;
+    private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
+    private static final PatternItem DOT = new Dot();
+    private static final List<PatternItem> DOTTED =
+            Arrays.asList(DOT, GAP);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +78,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         RoutesButton.setOnClickListener(new routesButtonClick());
         PauzeButton = findViewById(R.id.Pauzebutton);
         PauzeButton.setOnClickListener(new PauzeButtonClick());
+        GepaseerdePunten = new ArrayList<>();
     }
 
 
@@ -77,9 +93,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-
-
-        try {
             mMap = googleMap;
 
             MarkerStart = mMap.addMarker(new MarkerOptions().position(new LatLng(51.161891212585495, 4.136264966509771))
@@ -112,6 +125,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                             new LatLng(51.16491716166276, 4.141339705965947),
                             new LatLng(51.16775212389541, 4.142041974555468),
                             new LatLng(51.17039054011921, 4.14272659135215))
+                     .visible(false)
             );
             polyline1b = mMap.addPolyline(new PolylineOptions()
                     .clickable(true)
@@ -150,45 +164,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             stylePolyline(polyline1b);
             stylePolyline(polilyne1c);
             stylePolyline(polilyne1d);
-            if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                mMap.setMyLocationEnabled(true);
-            }
-
-            // camera positie aanpassen
-            LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-
-            Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-            huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(huidigeLocatie)
-                    .zoom(18)
-                    .bearing(myLocation.getBearing())
-                    .build();
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        } catch (Exception Locatie){
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setMessage("Er is geen locatie beschikbaar");
-            builder1.setCancelable(true);
-            builder1.setPositiveButton(
-                    "Yes",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            builder1.setNegativeButton(
-                    "No",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
-        }
-
 
         final TextView timerText = findViewById(R.id.timerTekst);
        timer = new CountDownTimer(1000000000, 1000){
@@ -214,34 +189,32 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                                 .build();
                         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     }
-
-
+                   if(huidigeLocatie != null) {
+                        GepaseerdePunten.add(huidigeLocatie);
+                    }
+                    if (GepaseerdePunten.size() != 0) {
+                        Gepaseerd = mMap.addPolyline(new PolylineOptions()
+                                .addAll(GepaseerdePunten)
+                        );
+                    }
+                    stylePolyline(Gepaseerd);
                 if(afstand(huidigeLocatie, MarkerStation.getPosition())<0.005){
-                    polyline1a.setVisible(false);
-                    polyline1b.setVisible(true);
                     MarkerStart.setVisible(false);
                     MarkerStation.setVisible(false);
                     MarkerSTEM.setVisible(true);
                 }
                     if(afstand(huidigeLocatie, MarkerSTEM.getPosition())<0.005){
-                        polyline1b.setVisible(false);
-                        polilyne1c.setVisible(true);
                         MarkerSTEM.setVisible(false);
                         MarkerMarkt.setVisible(true);
                     }
                     if(afstand(huidigeLocatie, MarkerMarkt.getPosition())<0.005){
-                        polilyne1c.setVisible(false);
-                        polilyne1d.setVisible(true);
                         MarkerMarkt.setVisible(false);
                         MarkerFinish.setVisible(true);
-                    }
-                    if(afstand(huidigeLocatie, MarkerFinish.getPosition())<0.005){
-                        polilyne1d.setVisible(false);
                     }
 
             } catch (Exception Locatie){
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
-                builder1.setMessage("Er is geen locatie beschikbaar");
+                builder1.setMessage(Locatie.getMessage());
                 builder1.setCancelable(true);
                 builder1.setPositiveButton(
                         "Yes",
@@ -268,9 +241,10 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     }
 
     private void stylePolyline(Polyline polyline) {
-        polyline.setWidth(8);
+        polyline.setWidth(20);
         polyline.setColor(rgb(146,46,76));
         polyline.setJointType(JointType.ROUND);
+        polyline.setPattern(DOTTED);
     }
 
 
