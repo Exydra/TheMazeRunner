@@ -14,7 +14,8 @@ RadioButton EenkmRadioButton;
         setContentView(R.layout.activity_routes_kiezen);
         EenkmRadioButton = (RadioButton) findViewById(R.id.EenkmRadioButton);
 
-    }
 
+
+    }
 }
 

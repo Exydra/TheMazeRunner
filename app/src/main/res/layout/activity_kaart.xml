@@ -98,5 +98,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.835" />
+
+        <TextView
+            android:id="@+id/uitlezenText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/RoutesButton"
+            android:layout_alignBottom="@+id/RoutesButton"
+            android:layout_toEndOf="@+id/timerTekst"
+            android:text="TextView" />
     </RelativeLayout>
 </RelativeLayout >
