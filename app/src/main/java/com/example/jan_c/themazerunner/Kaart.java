@@ -17,8 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import android.support.v7.app.AppCompatActivity;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,8 +35,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-
 
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
@@ -87,8 +83,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
 
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
-        fetchData process = new fetchData();
-        process.execute();
     }
 
 
