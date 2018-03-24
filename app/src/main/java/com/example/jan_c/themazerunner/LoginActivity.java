@@ -45,7 +45,7 @@ if(Objects.equals(leeg ,emailEditText.getText().toString()) | Objects.equals(lee
     aanmelden = new Aanmelden(emailEditText.getText().toString(),passwoordEditText.getText().toString());
     aanmelden.execute();
     Loper loper = aanmelden.loper;
-        if (loper.loperID != 0) {
+        if (loper.email != null) {
             Intent Kaart = new Intent(getApplicationContext(), Kaart.class);
             startActivity(Kaart);
         } else {
