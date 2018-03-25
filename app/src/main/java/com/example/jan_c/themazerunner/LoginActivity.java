@@ -16,6 +16,7 @@ import java.util.Objects;
  */
 public class LoginActivity extends AppCompatActivity{
     private Button inlogButton;
+    private Button registrereButton;
     public AutoCompleteTextView emailEditText;
     public EditText passwoordEditText;
     String leeg = "";
@@ -28,6 +29,8 @@ public class LoginActivity extends AppCompatActivity{
         inlogButton.setOnClickListener(new inlogButtonClick());
         emailEditText = (AutoCompleteTextView) findViewById(R.id.email);
         passwoordEditText = (EditText) findViewById(R.id.password);
+        registrereButton = (Button) findViewById(R.id.RegistrerenButton);
+        registrereButton.setOnClickListener(new registrerenButtonClick());
     }
 
 
@@ -62,8 +65,11 @@ if(Objects.equals(leeg ,emailEditText.getText().toString()) | Objects.equals(lee
         }
     }
 
-
-
+    class registrerenButtonClick implements View.OnClickListener {
+        public void onClick(View view) {
+            Intent RegistrerenActivity = new Intent(getApplicationContext(), RegistrerenActivity.class);
+            startActivity(RegistrerenActivity);
+        }}
 
 }
 

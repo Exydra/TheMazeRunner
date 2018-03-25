@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.jan_c.themazerunner.LoginActivity">
+    tools:context="com.example.jan_c.themazerunner.RegistrerenActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -32,10 +32,26 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/NaamEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/prompt_naam"
+                    android:inputType="textPersonName"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/email"
+                    android:id="@+id/EmailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
@@ -50,7 +66,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/WachtwoordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -64,22 +80,14 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/RegistrerenButton"
+                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:autoText="false"
-                android:text="Inloggen"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/RegistrerenButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Registreren"
-                android:textColor="@color/colorPrimaryDark" />
-
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

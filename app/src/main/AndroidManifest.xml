@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.jan_c.themazerunner" >
+    package="com.example.jan_c.themazerunner">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -37,8 +37,8 @@
 
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_login">
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,11 +47,14 @@
         </activity>
         <activity
             android:name=".Kaart"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_kaart" />
-        <activity android:name=".RoutesKiezen"
-            android:screenOrientation="portrait"
-            />
+            android:label="@string/title_activity_kaart"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RoutesKiezen"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegistrerenActivity"
+            android:label="@string/title_activity_registreren"></activity>
     </application>
 
 </manifest>
