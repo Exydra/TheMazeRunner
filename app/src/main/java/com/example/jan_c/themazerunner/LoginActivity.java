@@ -16,8 +16,8 @@ import java.util.Objects;
  */
 public class LoginActivity extends AppCompatActivity{
     private Button inlogButton;
-    private AutoCompleteTextView emailEditText;
-    private EditText passwoordEditText;
+    public AutoCompleteTextView emailEditText;
+    public EditText passwoordEditText;
     String leeg = "";
     Aanmelden aanmelden;
     @Override
@@ -42,10 +42,12 @@ if(Objects.equals(leeg ,emailEditText.getText().toString()) | Objects.equals(lee
     dlgAlert.setCancelable(true);
     dlgAlert.create().show();
 } else {
-    aanmelden = new Aanmelden(emailEditText.getText().toString(),passwoordEditText.getText().toString());
-    aanmelden.execute();
+    aanmelden = Aanmelden.getInstance();
+    aanmelden._email = emailEditText.getText().toString();
+    aanmelden._password = passwoordEditText.getText().toString();
+    aanmelden.doAanmeldenUitlezen();
     Loper loper = aanmelden.loper;
-        if (loper.email != null) {
+        if (loper.email.equals(aanmelden._email)  & loper.wachtwoord.equals(aanmelden._password)) {
             Intent Kaart = new Intent(getApplicationContext(), Kaart.class);
             startActivity(Kaart);
         } else {

@@ -83,6 +83,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
 
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
+        uitlezenText.setText(Aanmelden.getInstance().loper.naam);
     }
 
 
