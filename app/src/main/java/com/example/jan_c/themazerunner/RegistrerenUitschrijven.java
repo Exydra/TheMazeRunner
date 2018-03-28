@@ -15,13 +15,16 @@ import java.net.URL;
  */
 
 public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
-    Registreren registreren;
-    public  RegistrerenUitschrijven(){
-        registreren = Registreren.getInstance();
+    Loper loper;
+    public  RegistrerenUitschrijven(String naam, String wachtwoord, String email){
+        loper = new Loper();
+      loper.naam = naam;
+      loper.wachtwoord = wachtwoord;
+      loper.email = email;
     }
     @Override
     protected Void doInBackground(Void... voids) {
-        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=registreren&wachtwoord="+ registreren.loper.wachtwoord + "&email=" + registreren.loper.email + "&naam=" + registreren.loper.naam;
+        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=registreren&wachtwoord="+ loper.wachtwoord + "&email=" + loper.email + "&naam=" + loper.naam;
         HttpURLConnection httpURLConnection;
         try {
             URL url = new URL(URl);

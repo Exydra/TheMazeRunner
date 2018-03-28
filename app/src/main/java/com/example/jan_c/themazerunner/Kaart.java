@@ -60,6 +60,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private TextView afstandTextview;
     private ArrayList<LatLng> GepaseerdePunten;
     private Polyline Gepaseerd;
+    private TextView verwelkomingsTextview;
     private static final int PATTERN_GAP_LENGTH_PX = 20;
     private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
     private static final PatternItem DOT = new Dot();
@@ -80,7 +81,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         PauzeButton = findViewById(R.id.Pauzebutton);
         PauzeButton.setOnClickListener(new PauzeButtonClick());
         GepaseerdePunten = new ArrayList<>();
-
 
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
         uitlezenText.setText(Aanmelden.getInstance().loper.naam);
@@ -219,8 +219,8 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
                 } catch (Exception Locatie) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
-                    builder1.setMessage(Locatie.getMessage());
-                    builder1.setCancelable(true);
+                    builder1.setMessage("Er is geen locatie beschikbaar");
+                    builder1.setCancelable(false);
                     builder1.setPositiveButton(
                             "Yes",
                             new DialogInterface.OnClickListener() {

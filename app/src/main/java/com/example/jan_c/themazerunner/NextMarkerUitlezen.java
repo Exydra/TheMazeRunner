@@ -2,6 +2,8 @@ package com.example.jan_c.themazerunner;
 
 import android.os.AsyncTask;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,18 +17,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by jan_c on 24/03/2018.
+ * Created by jan_c on 27/03/2018.
  */
 
-public class AanmeldenUitlezen  extends AsyncTask<Void,Void,Void> {
+public class NextMarkerUitlezen extends AsyncTask<Void,Void,Void> {
     String data = "";
-    Aanmelden aanmelden;
-    public AanmeldenUitlezen (){
-       aanmelden  = Aanmelden.getInstance();
+    Marker marker;
+    Integer _parcourID;
+    Integer _loperID;
+    NextMarkerUitlezen nextMarkerUitlezen;
+    public NextMarkerUitlezen (Integer parcourID, Integer loperID){
+        _parcourID = parcourID;
+       _loperID = loperID;
+        marker = new Marker();
+    }
+    public Marker getNextMarker(){
+        return nextMarkerUitlezen.marker;
     }
     @Override
     protected Void doInBackground(Void... voids) {
-        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=aanmelden&wachtwoord=" + aanmelden._password  + "&email=" + aanmelden._email;
+        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=nextmarker&parcourID=" + nextMarkerUitlezen._parcourID + "loperID=" + nextMarkerUitlezen._loperID;
         HttpURLConnection httpURLConnection;
         try {
             URL url = new URL(URl);
@@ -43,15 +53,12 @@ public class AanmeldenUitlezen  extends AsyncTask<Void,Void,Void> {
             for (int i = 0; i < JA.length(); i++) {
 
                 JSONObject JO = (JSONObject) JA.get(i);
-                Loper loper = new Loper();
-                loper.loperID = (Integer) JO.get("LoperID");
-                loper.naam = JO.get("Naam").toString();
-                loper.wachtwoord = JO.get("Wachtwoord").toString();
-                loper.email = JO.get("Email").toString();
-                aanmelden.loper.loperID = loper.loperID;
-                aanmelden.loper.email = loper.email;
-                aanmelden.loper.wachtwoord = loper.wachtwoord;
-                aanmelden.loper.naam = loper.naam;
+                Marker marker = new Marker();
+                marker.markerID = (Integer) JO.get("MarkerID");
+                marker.volgorde = (Integer) JO.get("Volgorde");
+                marker.locatie = (LatLng) JO.get("Locatie");
+                marker.parcourID = (Integer) JO.get("ParcourID");
+                nextMarkerUitlezen.marker = marker;
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();

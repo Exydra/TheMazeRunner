@@ -2,6 +2,8 @@ package com.example.jan_c.themazerunner;
 
 import android.os.AsyncTask;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,18 +17,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by jan_c on 24/03/2018.
+ * Created by jan_c on 27/03/2018.
  */
 
-public class AanmeldenUitlezen  extends AsyncTask<Void,Void,Void> {
+public class LijstMarkersUitlezen extends AsyncTask<Void,Void,Void> {
     String data = "";
-    Aanmelden aanmelden;
-    public AanmeldenUitlezen (){
-       aanmelden  = Aanmelden.getInstance();
+    LijstMarkers lijstMarkers;
+    public LijstMarkersUitlezen(){
+        lijstMarkers  = LijstMarkers.getInstance();
     }
     @Override
     protected Void doInBackground(Void... voids) {
-        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=aanmelden&wachtwoord=" + aanmelden._password  + "&email=" + aanmelden._email;
+        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?Do=getmarkerlijst&parcourid="+lijstMarkers.parcourID;
         HttpURLConnection httpURLConnection;
         try {
             URL url = new URL(URl);
@@ -43,15 +45,12 @@ public class AanmeldenUitlezen  extends AsyncTask<Void,Void,Void> {
             for (int i = 0; i < JA.length(); i++) {
 
                 JSONObject JO = (JSONObject) JA.get(i);
-                Loper loper = new Loper();
-                loper.loperID = (Integer) JO.get("LoperID");
-                loper.naam = JO.get("Naam").toString();
-                loper.wachtwoord = JO.get("Wachtwoord").toString();
-                loper.email = JO.get("Email").toString();
-                aanmelden.loper.loperID = loper.loperID;
-                aanmelden.loper.email = loper.email;
-                aanmelden.loper.wachtwoord = loper.wachtwoord;
-                aanmelden.loper.naam = loper.naam;
+                Marker marker = new Marker();
+                marker.parcourID = (Integer) JO.get("ParcourID");
+                marker.locatie = (LatLng) JO.get("Locatie");
+                marker.markerID = (Integer) JO.get("MarkerID");
+                marker.volgorde = (Integer) JO.get("Volgorde");
+                lijstMarkers.lijstmarkers.add(marker);
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -70,3 +69,4 @@ public class AanmeldenUitlezen  extends AsyncTask<Void,Void,Void> {
         return JSON;
     }
 }
+

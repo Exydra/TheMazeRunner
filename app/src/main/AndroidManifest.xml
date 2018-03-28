@@ -54,7 +54,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".RegistrerenActivity"
-            android:label="@string/title_activity_registreren"></activity>
+            android:label="@string/title_activity_registreren"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

@@ -37,31 +37,40 @@ public class LoginActivity extends AppCompatActivity{
 
     class inlogButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-if(Objects.equals(leeg ,emailEditText.getText().toString()) | Objects.equals(leeg,passwoordEditText.getText().toString())){
-    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(LoginActivity.this);
-    dlgAlert.setMessage("Gelieve een e-mail adres en wachtwoord in te voeren");
-    dlgAlert.setTitle("Email-wachtwoord");
-    dlgAlert.setPositiveButton("OK", null);
-    dlgAlert.setCancelable(true);
-    dlgAlert.create().show();
-} else {
-    aanmelden = Aanmelden.getInstance();
-    aanmelden._email = emailEditText.getText().toString();
-    aanmelden._password = passwoordEditText.getText().toString();
-    aanmelden.doAanmeldenUitlezen();
-    Loper loper = aanmelden.loper;
-        if (loper.email.equals(aanmelden._email)  & loper.wachtwoord.equals(aanmelden._password)) {
-            Intent Kaart = new Intent(getApplicationContext(), Kaart.class);
-            startActivity(Kaart);
-        } else {
-            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
-            dlgAlert.setMessage("U hebt het foute emailadres of wachtwoord ingevoerd");
-            dlgAlert.setTitle("Email-wachtwoord");
-            dlgAlert.setPositiveButton("OK", null);
-            dlgAlert.setCancelable(true);
-            dlgAlert.create().show();
-    }
-}
+            try {
+                if (Objects.equals(leeg, emailEditText.getText().toString()) | Objects.equals(leeg, passwoordEditText.getText().toString())) {
+                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
+                    dlgAlert.setMessage("Gelieve een e-mail adres en wachtwoord in te voeren");
+                    dlgAlert.setTitle("Email-wachtwoord");
+                    dlgAlert.setPositiveButton("OK", null);
+                    dlgAlert.setCancelable(false);
+                    dlgAlert.create().show();
+                } else {
+                    aanmelden = Aanmelden.getInstance();
+                    aanmelden._email = emailEditText.getText().toString();
+                    aanmelden._password = passwoordEditText.getText().toString();
+                    aanmelden.doAanmeldenUitlezen();
+                    Loper loper = aanmelden.loper;
+                    if (loper.email.equals(aanmelden._email) & loper.wachtwoord.equals(aanmelden._password)) {
+                        Intent Kaart = new Intent(getApplicationContext(), Kaart.class);
+                        startActivity(Kaart);
+                    } else {
+                        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
+                        dlgAlert.setMessage("U hebt het foute emailadres of wachtwoord ingevoerd");
+                        dlgAlert.setTitle("Email-wachtwoord");
+                        dlgAlert.setPositiveButton("OK", null);
+                        dlgAlert.setCancelable(false);
+                        dlgAlert.create().show();
+                    }
+                }
+            }catch (Exception exeption){
+                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
+                dlgAlert.setMessage("Het inloggen is mislukt");
+                dlgAlert.setTitle("Error");
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.setCancelable(false);
+                dlgAlert.create().show();
+            }
         }
     }
 

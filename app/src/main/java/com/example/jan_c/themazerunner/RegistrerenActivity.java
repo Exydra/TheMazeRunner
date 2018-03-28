@@ -2,10 +2,13 @@ package com.example.jan_c.themazerunner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * A login screen that offers login via email/password.
@@ -27,13 +30,27 @@ public class RegistrerenActivity extends AppCompatActivity {
     }
     class registrerenButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-            Registreren registreren = Registreren.getInstance();
-            registreren.loper.naam = naamEditText.getText().toString();
-            registreren.loper.email = emailEditText.getText().toString();
-            registreren.loper.wachtwoord = wachtWoordEditText.getText().toString();
-            registreren.doRegistrerenUitschrijven();
-            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(loginActivity);
-        }}
+            try {
+                RegistrerenUitschrijven registrerenUitschrijven = new RegistrerenUitschrijven(naamEditText.getText().toString(), wachtWoordEditText.getText().toString(), emailEditText.getText().toString());
+                try {
+                    registrerenUitschrijven.execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(loginActivity);
+
+            }catch (Exception exeption){
+                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
+                dlgAlert.setMessage("Het registreren is mislukt");
+                dlgAlert.setTitle("Eror");
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.setCancelable(false);
+                dlgAlert.create().show();
+            }
+        }
+    }
 }
 
