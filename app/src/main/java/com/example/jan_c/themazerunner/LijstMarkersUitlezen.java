@@ -15,6 +15,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+
+import static java.lang.Double.parseDouble;
 
 /**
  * Created by jan_c on 27/03/2018.
@@ -22,13 +25,15 @@ import java.net.URL;
 
 public class LijstMarkersUitlezen extends AsyncTask<Void,Void,Void> {
     String data = "";
-    LijstMarkers lijstMarkers;
-    public LijstMarkersUitlezen(){
-        lijstMarkers  = LijstMarkers.getInstance();
-    }
+    ArrayList<Marker> lijstmarkers;
+    Integer _parcourID;
+    public LijstMarkersUitlezen(Integer parcourID){
+         _parcourID = parcourID;
+        lijstmarkers = new ArrayList<>();
+         }
     @Override
     protected Void doInBackground(Void... voids) {
-        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?Do=getmarkerlijst&parcourid="+lijstMarkers.parcourID;
+        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?Do=getmarkerlijst&parcourid="+_parcourID;
         HttpURLConnection httpURLConnection;
         try {
             URL url = new URL(URl);
@@ -47,10 +52,10 @@ public class LijstMarkersUitlezen extends AsyncTask<Void,Void,Void> {
                 JSONObject JO = (JSONObject) JA.get(i);
                 Marker marker = new Marker();
                 marker.parcourID = (Integer) JO.get("ParcourID");
-                marker.locatie = (LatLng) JO.get("Locatie");
+                marker.locatie = new LatLng(parseDouble(Lat(JO.get("Locatie").toString())), parseDouble(Lng(JO.get("Locatie").toString()))) ;
                 marker.markerID = (Integer) JO.get("MarkerID");
                 marker.volgorde = (Integer) JO.get("Volgorde");
-                lijstMarkers.lijstmarkers.add(marker);
+                lijstmarkers.add(marker);
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -63,10 +68,18 @@ public class LijstMarkersUitlezen extends AsyncTask<Void,Void,Void> {
     }
 
     public String HTMLtoJSON(String HTML){
-        Integer begin = HTML.indexOf("%") + 1;
-        Integer einde = HTML.indexOf("$");
+        Integer begin = HTML.indexOf("%") + 2;
+        Integer einde = HTML.indexOf("$")-1;
         String JSON = HTML.substring(begin, einde).trim();
         return JSON;
+    }
+    public String Lat(String latLng){
+        Integer komma = latLng.indexOf(",");
+        return latLng.substring(0,komma-1);
+    }
+    public String Lng(String latLng){
+        Integer komma = latLng.indexOf(",");
+        return latLng.substring(komma+1);
     }
 }
 

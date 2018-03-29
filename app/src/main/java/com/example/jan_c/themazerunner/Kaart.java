@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
@@ -67,8 +68,12 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private static final List<PatternItem> DOTTED = Arrays.asList(DOT, GAP);
     public static TextView uitlezenText;
     private Boolean geenLocatieError = false;
-
-
+    private Integer routeID = 0;
+    private  ArrayList<com.example.jan_c.themazerunner.Marker> lijstmarkers;
+    private LijstMarkersUitlezen lijstMarkersUitlezen;
+    private Integer aantalMarkers;
+    private Marker marker;
+    private Integer couterMarkers = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +90,19 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
         uitlezenText.setText(Aanmelden.getInstance().loper.naam);
+        routeID = 1;
+        if (routeID !=0){
+            lijstMarkersUitlezen = new LijstMarkersUitlezen(routeID);
+            try {
+                lijstMarkersUitlezen.execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            lijstmarkers = lijstMarkersUitlezen.lijstmarkers;
+            aantalMarkers = lijstmarkers.size();
+        }
     }
 
 
@@ -100,147 +118,72 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
-
-        MarkerStart = mMap.addMarker(new MarkerOptions().position(new LatLng(51.161891212585495, 4.136264966509771))
-                .title("Start")
-        );
-        MarkerStation = mMap.addMarker(new MarkerOptions().position(new LatLng(51.17039054011921, 4.142726591135215))
-                .title("Station")
-        );
-        MarkerSTEM = mMap.addMarker(new MarkerOptions().position(new LatLng(51.16623048764471, 4.144357827015028))
-                .title("STEM")
-                .visible(false)
-        );
-        MarkerMarkt = mMap.addMarker(new MarkerOptions().position(new LatLng(51.16476175829673, 4.14110284877097))
-                .title("Markt")
-                .visible(false)
-        );
-        MarkerFinish = mMap.addMarker(new MarkerOptions().position(new LatLng(51.161891212585495, 4.136264966509771))
-                .title("Finish")
-                .visible(false)
-        );
-        // Add a marker in Sydney and move the camera
-        polyline1a = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .add(new LatLng(51.161891212585495, 4.136264966509771),
-                        new LatLng(51.16215866116135, 4.136771904013585),
-                        new LatLng(51.16257917474246, 4.137313710562012),
-                        new LatLng(51.16309313972857, 4.138180934842239),
-                        new LatLng(51.163863502158144, 4.139504604950162),
-                        new LatLng(51.16487679373538, 4.14096956144931),
-                        new LatLng(51.16491716166276, 4.141339705965947),
-                        new LatLng(51.16775212389541, 4.142041974555468),
-                        new LatLng(51.17039054011921, 4.14272659135215))
-                .visible(false)
-        );
-        polyline1b = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .add(new LatLng(51.17039054011921, 4.142726591135215),
-                        new LatLng(51.17047039826386, 4.143024769073236),
-                        new LatLng(51.17026648447245, 4.14324001651039),
-                        new LatLng(51.16853341661673, 4.144846877443342),
-                        new LatLng(51.16846690763632, 4.144748323574277),
-                        new LatLng(51.168352542886, 4.144693338289471),
-                        new LatLng(51.16823313230337, 4.144772463414483),
-                        new LatLng(51.16816249493602, 4.144973629131528),
-                        new LatLng(51.16623048764471, 4.144357827015028))
-                .visible(false)
-        );
-        polilyne1c = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .add(new LatLng(51.16623048764471, 4.144357827015028),
-                        new LatLng(51.165503423384166, 4.1440817945931485),
-                        new LatLng(51.16525113164939, 4.143206053431641),
-                        new LatLng(51.16502817056048, 4.142514513841888),
-                        new LatLng(51.16492154495015, 4.141339218440407),
-                        new LatLng(51.16476175829673, 4.14110284877097))
-                .visible(false)
-        );
-        polilyne1d = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .add(new LatLng(51.16476175829673, 4.14110284877097),
-                        new LatLng(51.163863502158144, 4.139504604950162),
-                        new LatLng(51.16309313972857, 4.138180934842239),
-                        new LatLng(51.16257917474246, 4.137313710562012),
-                        new LatLng(51.16215866116135, 4.136771904013585),
-                        new LatLng(51.161891212585495, 4.136264966509771))
-                .visible(false)
-        );
-        stylePolyline(polyline1a);
-        stylePolyline(polyline1b);
-        stylePolyline(polilyne1c);
-        stylePolyline(polilyne1d);
-
         final TextView timerText = findViewById(R.id.timerTekst);
-        timer = new CountDownTimer(1000000000, 1000) {
+        timer = new CountDownTimer(2000000000, 1000) {
             public void onTick(long millisUntilFinished) {
-                timerText.setText(String.valueOf(counter));
-                counter += 1;
-                try {
-                    if ((ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                        mMap.setMyLocationEnabled(true);
-                    }
+                if (routeID != 0) {
+                    if(couterMarkers!=aantalMarkers) {
+                        timerText.setText(String.valueOf(counter));
+                        counter += 1;
+                        try {
+                            if ((ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                                mMap.setMyLocationEnabled(true);
+                            }
 
-                    // camera positie aanpassen
-                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    Criteria criteria = new Criteria();
+                            // camera positie aanpassen
+                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                            Criteria criteria = new Criteria();
 
-                    Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-                    huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                    if (!gepauzeerd) {
-                        CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(huidigeLocatie)
-                                .zoom(18)
-                                .bearing(myLocation.getBearing())
-                                .build();
-                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                    }
-                    if (huidigeLocatie != null) {
-                        GepaseerdePunten.add(huidigeLocatie);
-                    }
-                    if (GepaseerdePunten.size() != 0) {
-                        Gepaseerd = mMap.addPolyline(new PolylineOptions()
-                                .addAll(GepaseerdePunten)
-                        );
-                    }
-                    stylePolyline(Gepaseerd);
-                    if (afstand(huidigeLocatie, MarkerStation.getPosition()) < 0.005) {
-                        MarkerStart.setVisible(false);
-                        MarkerStation.setVisible(false);
-                        MarkerSTEM.setVisible(true);
-                    }
-                    if (afstand(huidigeLocatie, MarkerSTEM.getPosition()) < 0.005) {
-                        MarkerSTEM.setVisible(false);
-                        MarkerMarkt.setVisible(true);
-                    }
-                    if (afstand(huidigeLocatie, MarkerMarkt.getPosition()) < 0.005) {
-                        MarkerMarkt.setVisible(false);
-                        MarkerFinish.setVisible(true);
-                    }
+                            Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                            huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                            if (!gepauzeerd) {
+                                CameraPosition cameraPosition = new CameraPosition.Builder()
+                                        .target(huidigeLocatie)
+                                        .zoom(18)
+                                        .bearing(myLocation.getBearing())
+                                        .build();
+                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            }
+                            if (huidigeLocatie != null) {
+                                GepaseerdePunten.add(huidigeLocatie);
+                            }
+                            if (GepaseerdePunten.size() != 0) {
+                                Gepaseerd = mMap.addPolyline(new PolylineOptions()
+                                        .addAll(GepaseerdePunten)
+                                );
+                            }
+                            stylePolyline(Gepaseerd);
+                         marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
+                            if (afstand(huidigeLocatie, marker.getPosition()) < 0.005){
+                                couterMarkers+=1;
+                            }
+                        } catch (Exception Locatie) {
+                            if (!geenLocatieError) {
+                                geenLocatieError = true;
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
+                                builder1.setMessage("Er is geen locatie beschikbaar");
+                                builder1.setCancelable(false);
+                                builder1.setPositiveButton(
+                                        "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                geenLocatieError = false;
+                                                dialog.cancel();
+                                            }
+                                        });
 
-                } catch (Exception Locatie) {
-                    if (!geenLocatieError) {
-                        geenLocatieError = true;
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
-                        builder1.setMessage("Er is geen locatie beschikbaar");
-                        builder1.setCancelable(false);
-                        builder1.setPositiveButton(
-                                "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                             geenLocatieError = false;
-                                        dialog.cancel();
-                                    }
-                                });
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                            }
+                        }
+                    }else {
+                        timer.cancel();
                     }
                 }
             }
-
             public void onFinish() {
             }
+
         }.start();
     }
 
