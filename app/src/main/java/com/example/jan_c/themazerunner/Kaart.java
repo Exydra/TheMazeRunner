@@ -66,6 +66,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private static final PatternItem DOT = new Dot();
     private static final List<PatternItem> DOTTED = Arrays.asList(DOT, GAP);
     public static TextView uitlezenText;
+    private Boolean geenLocatieError = false;
 
 
     @Override
@@ -218,26 +219,23 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                     }
 
                 } catch (Exception Locatie) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
-                    builder1.setMessage("Er is geen locatie beschikbaar");
-                    builder1.setCancelable(false);
-                    builder1.setPositiveButton(
-                            "Yes",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    builder1.setNegativeButton(
-                            "No",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                    if (!geenLocatieError) {
+                        geenLocatieError = true;
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
+                        builder1.setMessage("Er is geen locatie beschikbaar");
+                        builder1.setCancelable(false);
+                        builder1.setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                             geenLocatieError = false;
+                                        dialog.cancel();
+                                    }
+                                });
 
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }
                 }
             }
 
