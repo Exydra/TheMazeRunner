@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,8 +7,10 @@
     tools:context="com.example.jan_c.themazerunner.RoutesKiezen">
 
     <RadioGroup
+        android:id="@+id/RadioButtonsGroup"
         android:layout_width="214dp"
         android:layout_height="169dp"
+        android:layout_margin="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.229"
@@ -16,32 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.046">
 
-        <RadioButton
-            android:id="@+id/EenkmRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/_1km" />
-
-        <RadioButton
-            android:id="@+id/TweekmRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/_2km" />
-
-        <RadioButton
-            android:id="@+id/VijfkmRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/_5km" />
-
-        <RadioButton
-            android:id="@+id/TienkmRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/_10km" />
     </RadioGroup>
-</android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/KiesParcourButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:text="Kies Parcour" />
+
+</RelativeLayout>

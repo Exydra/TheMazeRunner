@@ -90,7 +90,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
 
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
         uitlezenText.setText(Aanmelden.getInstance().loper.naam);
-        routeID = 1;
+        routeID = getIntent().getIntExtra("parcourID", 0);
         if (routeID !=0){
             lijstMarkersUitlezen = new LijstMarkersUitlezen(routeID);
             try {
@@ -121,7 +121,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         final TextView timerText = findViewById(R.id.timerTekst);
         timer = new CountDownTimer(2000000000, 1000) {
             public void onTick(long millisUntilFinished) {
-                if (routeID != 0) {
+
                     if(couterMarkers!=aantalMarkers) {
                         timerText.setText(String.valueOf(counter));
                         counter += 1;
@@ -144,18 +144,20 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                                         .build();
                                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                             }
-                            if (huidigeLocatie != null) {
-                                GepaseerdePunten.add(huidigeLocatie);
-                            }
-                            if (GepaseerdePunten.size() != 0) {
-                                Gepaseerd = mMap.addPolyline(new PolylineOptions()
-                                        .addAll(GepaseerdePunten)
-                                );
-                            }
-                            stylePolyline(Gepaseerd);
-                         marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
-                            if (afstand(huidigeLocatie, marker.getPosition()) < 0.005){
-                                couterMarkers+=1;
+                            if (routeID != 0) {
+                                if (huidigeLocatie != null) {
+                                    GepaseerdePunten.add(huidigeLocatie);
+                                }
+                                if (GepaseerdePunten.size() != 0) {
+                                    Gepaseerd = mMap.addPolyline(new PolylineOptions()
+                                            .addAll(GepaseerdePunten)
+                                    );
+                                }
+                                stylePolyline(Gepaseerd);
+                                marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
+                                if (afstand(huidigeLocatie, marker.getPosition()) < 0.005) {
+                                    couterMarkers += 1;
+                                }
                             }
                         } catch (Exception Locatie) {
                             if (!geenLocatieError) {
@@ -179,7 +181,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                     }else {
                         timer.cancel();
                     }
-                }
+
             }
             public void onFinish() {
             }
