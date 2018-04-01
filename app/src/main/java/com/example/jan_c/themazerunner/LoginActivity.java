@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity{
             try {
                 if (Objects.equals(leeg, emailEditText.getText().toString()) | Objects.equals(leeg, passwoordEditText.getText().toString())) {
                     AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
-                    dlgAlert.setMessage("Gelieve een e-mail adres en wachtwoord in te voeren");
+                    dlgAlert.setMessage("Gelieve een e-mail adres en/of wachtwoord in te voeren");
                     dlgAlert.setTitle("Email-wachtwoord");
                     dlgAlert.setPositiveButton("OK", null);
                     dlgAlert.setCancelable(false);
