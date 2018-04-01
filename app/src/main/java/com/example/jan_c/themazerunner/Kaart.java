@@ -13,9 +13,14 @@ import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,9 +97,19 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         GepaseerdePunten = new ArrayList<>();
 
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
+        uitlezenText.setText(Aanmelden.getInstance().loper.naam);
+
 
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER, 0,0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
 
         if(timeOfDay >= 0 && timeOfDay < 12){
             Toast.makeText(this, "Goedemorgen " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
@@ -106,7 +121,10 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             Toast.makeText(this, "Goede nacht " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
         }
 
-        uitlezenText.setText(Aanmelden.getInstance().loper.naam);
+
+
+
+
 
 
         routeID = getIntent().getIntExtra("parcourID", 0);
