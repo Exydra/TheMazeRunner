@@ -14,8 +14,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -89,7 +92,23 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         GepaseerdePunten = new ArrayList<>();
 
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
+
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        if(timeOfDay >= 0 && timeOfDay < 12){
+            Toast.makeText(this, "Goedemorgen " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
+        }else if(timeOfDay >= 12 && timeOfDay < 16){
+            Toast.makeText(this, "Goedenmiddag " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
+        }else if(timeOfDay >= 16 && timeOfDay < 21){
+            Toast.makeText(this, "Goedenavond " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
+        }else if(timeOfDay >= 21 && timeOfDay < 24){
+            Toast.makeText(this, "Goede nacht " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
+        }
+
         uitlezenText.setText(Aanmelden.getInstance().loper.naam);
+
+
         routeID = getIntent().getIntExtra("parcourID", 0);
         if (routeID !=0){
             lijstMarkersUitlezen = new LijstMarkersUitlezen(routeID);
@@ -236,6 +255,10 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             }
         }
     }
+
+
+
+
 
 }
 
