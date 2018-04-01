@@ -38,14 +38,15 @@ public class LoginActivity extends AppCompatActivity{
     class inlogButtonClick implements View.OnClickListener {
         public void onClick(View view) {
             try {
-                if (Objects.equals(leeg, emailEditText.getText().toString()) | Objects.equals(leeg, passwoordEditText.getText().toString())) {
+           if (Objects.equals(leeg, emailEditText.getText().toString()) | Objects.equals(leeg, passwoordEditText.getText().toString())) {
                     AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
-                    dlgAlert.setMessage("Gelieve een e-mail adres en/of wachtwoord in te voeren");
-                    dlgAlert.setTitle("Email-wachtwoord");
+                    dlgAlert.setMessage("Niet alles is ingevuld.");
+                    dlgAlert.setTitle("Error");
                     dlgAlert.setPositiveButton("OK", null);
                     dlgAlert.setCancelable(false);
                     dlgAlert.create().show();
-                } else {
+                } else
+                  {
                     aanmelden = Aanmelden.getInstance();
                     aanmelden._email = emailEditText.getText().toString();
                     aanmelden._password = passwoordEditText.getText().toString();
@@ -56,16 +57,16 @@ public class LoginActivity extends AppCompatActivity{
                         startActivity(Kaart);
                     } else {
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
-                        dlgAlert.setMessage("U hebt het foute emailadres of wachtwoord ingevoerd");
-                        dlgAlert.setTitle("Email-wachtwoord");
+                        dlgAlert.setMessage("U hebt het foute emailadres of wachtwoord ingevoerd.");
+                        dlgAlert.setTitle("Error");
                         dlgAlert.setPositiveButton("OK", null);
                         dlgAlert.setCancelable(false);
                         dlgAlert.create().show();
-                    }
-                }
+                    }}
+
             }catch (Exception exeption){
                 AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
-                dlgAlert.setMessage("Het inloggen is mislukt");
+                dlgAlert.setMessage("Het inloggen is mislukt.");
                 dlgAlert.setTitle("Error");
                 dlgAlert.setPositiveButton("OK", null);
                 dlgAlert.setCancelable(false);
