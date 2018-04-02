@@ -17,10 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroupOverlay;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -160,6 +157,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             public void onTick(long millisUntilFinished) {
 
                     if(couterMarkers!=aantalMarkers) {
+
                         timerText.setText(String.valueOf(counter));
                         counter += 1;
                         try {
