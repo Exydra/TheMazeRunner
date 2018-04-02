@@ -79,6 +79,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
     private Integer aantalMarkers;
     private Marker marker;
     private Integer couterMarkers = 0;
+    private TextView toastTekst;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,33 +98,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         uitlezenText.setText(Aanmelden.getInstance().loper.naam);
 
 
-        Calendar c = Calendar.getInstance();
-        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER, 0,0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
-
-        if(timeOfDay >= 0 && timeOfDay < 12){
-            Toast.makeText(this, "Goedemorgen " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
-        }else if(timeOfDay >= 12 && timeOfDay < 16){
-            Toast.makeText(this, "Goedenmiddag " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
-        }else if(timeOfDay >= 16 && timeOfDay < 21){
-            Toast.makeText(this, "Goedenavond " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
-        }else if(timeOfDay >= 21 && timeOfDay < 24){
-            Toast.makeText(this, "Goede nacht " + Aanmelden.getInstance().loper.naam + "!", Toast.LENGTH_SHORT).show();
-        }
-
-
-
-
-
-
-
         routeID = getIntent().getIntExtra("parcourID", 0);
         if (routeID !=0){
             lijstMarkersUitlezen = new LijstMarkersUitlezen(routeID);
@@ -137,6 +111,26 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             lijstmarkers = lijstMarkersUitlezen.lijstmarkers;
             aantalMarkers = lijstmarkers.size();
         }
+        //BegroetingsToast
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER, 0,0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toastTekst = (TextView) toast.getView().findViewById(R.id.toast_text);
+        if(timeOfDay >= 0 && timeOfDay < 12){
+            toastTekst.setText("Goedemorgen " + Aanmelden.getInstance().loper.naam + "!");
+        }else if(timeOfDay >= 12 && timeOfDay < 16){
+            toastTekst.setText("Goedenmiddag " + Aanmelden.getInstance().loper.naam + "!");
+        }else if(timeOfDay >= 16 && timeOfDay < 21){
+            toastTekst.setText("Goedenavond " + Aanmelden.getInstance().loper.naam + "!");
+        }else if(timeOfDay >= 21 && timeOfDay < 24){
+            toastTekst.setText("Goede nacht " + Aanmelden.getInstance().loper.naam + "!");
+        }
+        toast.show();
     }
 
 
@@ -271,11 +265,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             }
         }
     }
-
-
-
-
-
 }
 
 
