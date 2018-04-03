@@ -45,28 +45,16 @@ import java.util.concurrent.ExecutionException;
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
 
-public class Kaart extends FragmentActivity implements OnMapReadyCallback {
+public class Kaart extends FragmentActivity implements OnMapReadyCallback{
     public double counter = 0;
     private GoogleMap mMap;
     private LatLng huidigeLocatie;
-    private Polyline polyline1a;
-    private Polyline polyline1b;
-    private Polyline polilyne1c;
-    private Polyline polilyne1d;
-    private Marker MarkerStart;
-    private Marker MarkerStation;
-    private Marker MarkerSTEM;
-    private Marker MarkerMarkt;
-    private Marker MarkerFinish;
     private Button RoutesButton;
-    private TextView timerTextvieuw;
     private Button PauzeButton;
     private CountDownTimer timer;
     private Boolean gepauzeerd = false;
-    private TextView afstandTextview;
     private ArrayList<LatLng> GepaseerdePunten;
     private Polyline Gepaseerd;
-    private TextView verwelkomingsTextview;
     private static final int PATTERN_GAP_LENGTH_PX = 20;
     private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
     private static final PatternItem DOT = new Dot();
@@ -94,10 +82,11 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         PauzeButton.setOnClickListener(new PauzeButtonClick());
         GepaseerdePunten = new ArrayList<>();
 
+        // geeft de gebruikersnaam weer
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
         uitlezenText.setText(Aanmelden.getInstance().loper.naam);
 
-
+        //zet de markers vann de gekozen route in een lijst
         routeID = getIntent().getIntExtra("parcourID", 0);
         if (routeID !=0){
             lijstMarkersUitlezen = new LijstMarkersUitlezen(routeID);
@@ -111,6 +100,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             lijstmarkers = lijstMarkersUitlezen.lijstmarkers;
             aantalMarkers = lijstmarkers.size();
         }
+
         //BegroetingsToast
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
@@ -145,26 +135,33 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        mMap = googleMap;
-        final TextView timerText = findViewById(R.id.timerTekst);
-        timer = new CountDownTimer(2000000000, 1000) {
-            public void onTick(long millisUntilFinished) {
 
-                    if(couterMarkers!=aantalMarkers) {
+            mMap = googleMap;
+
+            //timer
+            final TextView timerText = findViewById(R.id.timerTekst);
+            timer = new CountDownTimer(2000000000, 1000) {
+                public void onTick(long millisUntilFinished) {
+
+                    //controleeerd of de loper nog niet is gefinisht
+                    if (couterMarkers != aantalMarkers) {
 
                         timerText.setText(String.valueOf(counter));
                         counter += 1;
                         try {
+
+                            // zet locatie aan als er toesteming is
                             if ((ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                                 mMap.setMyLocationEnabled(true);
                             }
 
-                            // camera positie aanpassen
+                            //huidige locatie
                             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                             Criteria criteria = new Criteria();
-
                             Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
                             huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+
+                            //update camera postie als er niet is gepauzeerd
                             if (!gepauzeerd) {
                                 CameraPosition cameraPosition = new CameraPosition.Builder()
                                         .target(huidigeLocatie)
@@ -173,21 +170,31 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                                         .build();
                                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                             }
+
+                            //plaatst de gepaseerde punten in een lijst
                             if (routeID != 0) {
                                 if (huidigeLocatie != null) {
                                     GepaseerdePunten.add(huidigeLocatie);
                                 }
+
+                                //plaatst de polyline met de gepaseerde punten op de kaart
                                 if (GepaseerdePunten.size() != 0) {
                                     Gepaseerd = mMap.addPolyline(new PolylineOptions()
                                             .addAll(GepaseerdePunten)
                                     );
                                 }
                                 stylePolyline(Gepaseerd);
+
+                                //plaatst de marker op de kaart
                                 marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
+
+                                //kijkt of de loper aan de marker is
                                 if (afstand(huidigeLocatie, marker.getPosition()) < 0.005) {
                                     couterMarkers += 1;
                                 }
                             }
+
+                            //handelt de exeption af
                         } catch (Exception Locatie) {
                             if (!geenLocatieError) {
                                 geenLocatieError = true;
@@ -207,17 +214,19 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
                                 alert11.show();
                             }
                         }
-                    }else {
+                    } else {
                         timer.cancel();
                     }
 
-            }
-            public void onFinish() {
-            }
+                }
 
-        }.start();
-    }
+                public void onFinish() {
+                }
 
+            }.start();
+        }
+
+   //stelt de stijl van de polyline in
     private void stylePolyline(Polyline polyline) {
         polyline.setWidth(20);
         polyline.setColor(rgb(146, 46, 76));
@@ -225,7 +234,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         polyline.setPattern(DOTTED);
     }
 
-
+   //berekend de afstand tussen 2 punten
     public double afstand(LatLng p1, LatLng p2) {
         double R = 6371;
         double dLat = toRadians(p2.latitude - p1.latitude);
@@ -236,11 +245,12 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
     }
-
+    //past de formule van haversin toe
     public static double haversin(double val) {
         return Math.pow(Math.sin(val / 2), 2);
     }
 
+    //cick event voor een route te seleceteren
     class routesButtonClick implements View.OnClickListener {
         public void onClick(View view) {
             Intent Routes = new Intent(getApplicationContext(), RoutesKiezen.class);
@@ -248,6 +258,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
         }
     }
 
+    //click event zodat de camera uitzoemt en niet meer volgt
     class PauzeButtonClick implements View.OnClickListener {
         public void onClick(View view) {
             if (!gepauzeerd) {
@@ -265,6 +276,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback {
             }
         }
     }
+
 }
 
 

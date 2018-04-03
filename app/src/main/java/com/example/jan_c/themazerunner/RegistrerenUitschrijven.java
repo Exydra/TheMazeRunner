@@ -16,6 +16,7 @@ import java.net.URL;
 
 public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
     Loper loper;
+    String data = "";
     public  RegistrerenUitschrijven(String naam, String wachtwoord, String email){
         loper = new Loper();
       loper.naam = naam;
@@ -31,6 +32,11 @@ public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
             httpURLConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line = "";
+            while (line != null) {
+                line = bufferedReader.readLine();
+                data = data + line;
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

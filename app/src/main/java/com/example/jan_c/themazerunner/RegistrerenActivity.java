@@ -33,10 +33,6 @@ public class RegistrerenActivity extends AppCompatActivity {
 
 
     class registrerenButtonClick implements View.OnClickListener {
-
-
-
-
         public void onClick(View view) {
             try {
 
@@ -89,6 +85,7 @@ public class RegistrerenActivity extends AppCompatActivity {
         }
     }
 
+    //controle email
     public int emailTest(String email) {
     Integer apenstaartje = email.toString().indexOf("@");
     Integer punt = email.toString().indexOf(".");
