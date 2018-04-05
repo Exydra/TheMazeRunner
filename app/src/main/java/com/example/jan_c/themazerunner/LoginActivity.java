@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     Aanmelden aanmelden;
     private static final Integer MY_PERMISSIONS_REQUEST_LOCATION = 0;
     private View mLayout;
+    Intent kaartIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +69,8 @@ public class LoginActivity extends AppCompatActivity {
                         aanmelden.doAanmeldenUitlezen();
                         Loper loper = aanmelden.loper;
                         if (loper.email.equals(aanmelden._email) & loper.wachtwoord.equals(aanmelden._password)) {
-                            Intent Kaart = new Intent(getApplicationContext(), Kaart.class);
-                            startActivity(Kaart);
+                            kaartIntent = new Intent(getApplicationContext(), Kaart.class);
+                            startActivity(kaartIntent);
                         } else {
                             AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
                             dlgAlert.setMessage("U hebt het foute emailadres of wachtwoord ingevoerd.");

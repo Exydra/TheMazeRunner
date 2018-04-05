@@ -1,7 +1,9 @@
 package com.example.jan_c.themazerunner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -44,15 +46,33 @@ public class RoutesKiezen extends AppCompatActivity {
         for (Integer i = 0; i<parcours.size();i++){
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText(parcours.get(i).omschrijving + " " + parcours.get(i).afstand);
+            radioButton.setId(i+1);
             radioGroup.addView(radioButton);
         }
     }
     class kiesParcourButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-            Intent Kaart = new Intent(getApplicationContext(), Kaart.class);
-            Integer idOfSelected = radioGroup.getCheckedRadioButtonId();
-            Kaart.putExtra("parcourID", parcourDictionary.get(idOfSelected-1));
-            startActivity(Kaart);
+            Intent kaartIntent = new Intent(getApplicationContext(), Kaart.class);
+            Integer idOfSelected = -1;
+            idOfSelected = radioGroup.getCheckedRadioButtonId();
+            if (idOfSelected == -1){
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(RoutesKiezen.this);
+                builder1.setMessage("U moet een parcour kiezen");
+                builder1.setCancelable(false);
+                builder1.setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }else{
+                idOfSelected = radioGroup.getCheckedRadioButtonId();
+                kaartIntent.putExtra("parcourID", parcourDictionary.get(idOfSelected-1));
+                startActivity(kaartIntent);
+            }
         }}
 }
 

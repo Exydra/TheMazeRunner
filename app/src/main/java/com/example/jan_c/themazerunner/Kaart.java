@@ -1,6 +1,7 @@
 package com.example.jan_c.themazerunner;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +44,7 @@ import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -52,13 +54,11 @@ import java.util.concurrent.ExecutionException;
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
 
-public class Kaart extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+public class Kaart extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
     private DrawerLayout mDrawerLayout;
     public double counter = 0;
     private GoogleMap mMap;
     private LatLng huidigeLocatie;
-    private Button RoutesButton;
     private Button PauzeButton;
     private CountDownTimer timer;
     private Boolean gepauzeerd = false;
@@ -68,7 +68,6 @@ public class Kaart extends AppCompatActivity
     private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
     private static final PatternItem DOT = new Dot();
     private static final List<PatternItem> DOTTED = Arrays.asList(DOT, GAP);
-    public static TextView uitlezenText;
     private Boolean geenLocatieError = false;
     private Integer routeID = 0;
     private  ArrayList<com.example.jan_c.themazerunner.Marker> lijstmarkers;
@@ -79,6 +78,8 @@ public class Kaart extends AppCompatActivity
     private TextView toastTekst;
     private TextView gebruikersNaamTextview;
     private TextView emailTextview;
+    private TextView afstandTotVolgendePuntTextView;
+    private TextView volgendePuntTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,15 +131,10 @@ public class Kaart extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        RoutesButton = findViewById(R.id.RoutesButton);
-        RoutesButton.setOnClickListener(new routesButtonClick());
         PauzeButton = findViewById(R.id.Pauzebutton);
         PauzeButton.setOnClickListener(new PauzeButtonClick());
         GepaseerdePunten = new ArrayList<>();
 
-        // geeft de gebruikersnaam weer
-        uitlezenText = (TextView) findViewById(R.id.uitlezenText);
-        uitlezenText.setText(Aanmelden.getInstance().loper.naam);
         //zet de markers vann de gekozen route in een lijst
         routeID = getIntent().getIntExtra("parcourID", 0);
         if (routeID !=0){
@@ -174,6 +170,9 @@ public class Kaart extends AppCompatActivity
             toastTekst.setText("Goede nacht " + Aanmelden.getInstance().loper.naam + "!");
         }
         toast.show();
+        afstandTotVolgendePuntTextView = findViewById(R.id.afstandTextview);
+        volgendePuntTextView = findViewById(R.id.VolgendePuntTextview);
+        volgendePuntTextView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -211,8 +210,8 @@ public class Kaart extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_routes) {
-            Intent Routes = new Intent(getApplicationContext(), RoutesKiezen.class);
-            startActivity(Routes);
+            Intent routesKiezenIntent = new Intent(getApplicationContext(), RoutesKiezen.class);
+            startActivity(routesKiezenIntent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -237,6 +236,7 @@ public class Kaart extends AppCompatActivity
         //timer
         final TextView timerText = findViewById(R.id.timerTekst);
         timer = new CountDownTimer(2000000000, 1000) {
+            @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
 
                 //controleeerd of de loper nog niet is gefinisht
@@ -269,6 +269,7 @@ public class Kaart extends AppCompatActivity
 
                         //plaatst de gepaseerde punten in een lijst
                         if (routeID != 0) {
+                            volgendePuntTextView.setVisibility(View.VISIBLE);
                             if (huidigeLocatie != null) {
                                 GepaseerdePunten.add(huidigeLocatie);
                             }
@@ -283,6 +284,11 @@ public class Kaart extends AppCompatActivity
 
                             //plaatst de marker op de kaart
                             marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
+
+                            //berekend afstand tot volgende punt
+                            Double afstand = afstand(huidigeLocatie,marker.getPosition());
+                            DecimalFormat decimalFormat = new DecimalFormat("#0.000");
+                             afstandTotVolgendePuntTextView.setText(decimalFormat.format(afstand));
 
                             //kijkt of de loper aan de marker is
                             if (afstand(huidigeLocatie, marker.getPosition()) < 0.005) {
@@ -346,13 +352,6 @@ public class Kaart extends AppCompatActivity
         return Math.pow(Math.sin(val / 2), 2);
     }
 
-    //cick event voor een route te seleceteren
-    class routesButtonClick implements View.OnClickListener {
-        public void onClick(View view) {
-            Intent Routes = new Intent(getApplicationContext(), RoutesKiezen.class);
-            startActivity(Routes);
-        }
-    }
 
     //click event zodat de camera uitzoemt en niet meer volgt
     class PauzeButtonClick implements View.OnClickListener {
