@@ -10,11 +10,19 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,7 +38,6 @@ import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
@@ -45,7 +52,9 @@ import java.util.concurrent.ExecutionException;
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
 
-public class Kaart extends FragmentActivity implements OnMapReadyCallback{
+public class Kaart extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+    private DrawerLayout mDrawerLayout;
     public double counter = 0;
     private GoogleMap mMap;
     private LatLng huidigeLocatie;
@@ -65,14 +74,59 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback{
     private  ArrayList<com.example.jan_c.themazerunner.Marker> lijstmarkers;
     private LijstMarkersUitlezen lijstMarkersUitlezen;
     private Integer aantalMarkers;
-    private Marker marker;
+    private com.google.android.gms.maps.model.Marker marker;
     private Integer couterMarkers = 0;
     private TextView toastTekst;
+    private TextView gebruikersNaamTextview;
+    private TextView emailTextview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kaart);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        setContentView(R.layout.activity_navigation_drawer);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        //Respond when the drawer's position open
+                        gebruikersNaamTextview = findViewById(R.id.gebruikersnaamTextview);
+                        gebruikersNaamTextview.setText(Aanmelden.getInstance().loper.naam);
+                        emailTextview = findViewById(R.id.emailTextview);
+                        emailTextview.setText(Aanmelden.getInstance().loper.email);
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -85,7 +139,6 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback{
         // geeft de gebruikersnaam weer
         uitlezenText = (TextView) findViewById(R.id.uitlezenText);
         uitlezenText.setText(Aanmelden.getInstance().loper.naam);
-
         //zet de markers vann de gekozen route in een lijst
         routeID = getIntent().getIntExtra("parcourID", 0);
         if (routeID !=0){
@@ -123,110 +176,153 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback{
         toast.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.navigation_drawer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_routes) {
+            Intent Routes = new Intent(getApplicationContext(), RoutesKiezen.class);
+            startActivity(Routes);
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
     @Override
     public void onMapReady(final GoogleMap googleMap) {
 
-            mMap = googleMap;
+        mMap = googleMap;
 
-            //timer
-            final TextView timerText = findViewById(R.id.timerTekst);
-            timer = new CountDownTimer(2000000000, 1000) {
-                public void onTick(long millisUntilFinished) {
+        //timer
+        final TextView timerText = findViewById(R.id.timerTekst);
+        timer = new CountDownTimer(2000000000, 1000) {
+            public void onTick(long millisUntilFinished) {
 
-                    //controleeerd of de loper nog niet is gefinisht
-                    if (couterMarkers != aantalMarkers) {
+                //controleeerd of de loper nog niet is gefinisht
+                if (couterMarkers != aantalMarkers) {
 
-                        timerText.setText(String.valueOf(counter));
-                        counter += 1;
-                        try {
+                    timerText.setText(String.valueOf(counter));
+                    counter += 1;
+                    try {
 
-                            // zet locatie aan als er toesteming is
-                            if ((ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-                                mMap.setMyLocationEnabled(true);
+                        // zet locatie aan als er toesteming is
+                        if ((ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+                            mMap.setMyLocationEnabled(true);
+                        }
+
+                        //huidige locatie
+                        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                        Criteria criteria = new Criteria();
+                        Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                        huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+
+                        //update camera postie als er niet is gepauzeerd
+                        if (!gepauzeerd) {
+                            CameraPosition cameraPosition = new CameraPosition.Builder()
+                                    .target(huidigeLocatie)
+                                    .zoom(18)
+                                    .bearing(myLocation.getBearing())
+                                    .build();
+                            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        }
+
+                        //plaatst de gepaseerde punten in een lijst
+                        if (routeID != 0) {
+                            if (huidigeLocatie != null) {
+                                GepaseerdePunten.add(huidigeLocatie);
                             }
 
-                            //huidige locatie
-                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                            Criteria criteria = new Criteria();
-                            Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-                            huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-
-                            //update camera postie als er niet is gepauzeerd
-                            if (!gepauzeerd) {
-                                CameraPosition cameraPosition = new CameraPosition.Builder()
-                                        .target(huidigeLocatie)
-                                        .zoom(18)
-                                        .bearing(myLocation.getBearing())
-                                        .build();
-                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            //plaatst de polyline met de gepaseerde punten op de kaart
+                            if (GepaseerdePunten.size() != 0) {
+                                Gepaseerd = mMap.addPolyline(new PolylineOptions()
+                                        .addAll(GepaseerdePunten)
+                                );
                             }
+                            stylePolyline(Gepaseerd);
 
-                            //plaatst de gepaseerde punten in een lijst
-                            if (routeID != 0) {
-                                if (huidigeLocatie != null) {
-                                    GepaseerdePunten.add(huidigeLocatie);
-                                }
+                            //plaatst de marker op de kaart
+                            marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
 
-                                //plaatst de polyline met de gepaseerde punten op de kaart
-                                if (GepaseerdePunten.size() != 0) {
-                                    Gepaseerd = mMap.addPolyline(new PolylineOptions()
-                                            .addAll(GepaseerdePunten)
-                                    );
-                                }
-                                stylePolyline(Gepaseerd);
-
-                                //plaatst de marker op de kaart
-                                marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
-
-                                //kijkt of de loper aan de marker is
-                                if (afstand(huidigeLocatie, marker.getPosition()) < 0.005) {
-                                    couterMarkers += 1;
-                                }
-                            }
-
-                            //handelt de exeption af
-                        } catch (Exception Locatie) {
-                            if (!geenLocatieError) {
-                                geenLocatieError = true;
-                                AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
-                                builder1.setMessage("Er is geen locatie beschikbaar");
-                                builder1.setCancelable(false);
-                                builder1.setPositiveButton(
-                                        "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                geenLocatieError = false;
-                                                dialog.cancel();
-                                            }
-                                        });
-
-                                AlertDialog alert11 = builder1.create();
-                                alert11.show();
+                            //kijkt of de loper aan de marker is
+                            if (afstand(huidigeLocatie, marker.getPosition()) < 0.005) {
+                                couterMarkers += 1;
                             }
                         }
-                    } else {
-                        timer.cancel();
+
+                        //handelt de exeption af
+                    } catch (Exception Locatie) {
+                        if (!geenLocatieError) {
+                            geenLocatieError = true;
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
+                            builder1.setMessage("Er is geen locatie beschikbaar");
+                            builder1.setCancelable(false);
+                            builder1.setPositiveButton(
+                                    "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            geenLocatieError = false;
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            AlertDialog alert11 = builder1.create();
+                            alert11.show();
+                        }
                     }
-
+                } else {
+                    timer.cancel();
                 }
 
-                public void onFinish() {
-                }
+            }
 
-            }.start();
-        }
+            public void onFinish() {
+            }
 
-   //stelt de stijl van de polyline in
+        }.start();
+    }
+
+    //stelt de stijl van de polyline in
     private void stylePolyline(Polyline polyline) {
         polyline.setWidth(20);
         polyline.setColor(rgb(146, 46, 76));
@@ -234,7 +330,7 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback{
         polyline.setPattern(DOTTED);
     }
 
-   //berekend de afstand tussen 2 punten
+    //berekend de afstand tussen 2 punten
     public double afstand(LatLng p1, LatLng p2) {
         double R = 6371;
         double dLat = toRadians(p2.latitude - p1.latitude);
@@ -278,5 +374,3 @@ public class Kaart extends FragmentActivity implements OnMapReadyCallback{
     }
 
 }
-
-

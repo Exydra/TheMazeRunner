@@ -49,7 +49,7 @@ public class RoutesKiezen extends AppCompatActivity {
     }
     class kiesParcourButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-            Intent Kaart = new Intent(getApplicationContext(), com.example.jan_c.themazerunner.Kaart.class);
+            Intent Kaart = new Intent(getApplicationContext(), Kaart.class);
             Integer idOfSelected = radioGroup.getCheckedRadioButtonId();
             Kaart.putExtra("parcourID", parcourDictionary.get(idOfSelected-1));
             startActivity(Kaart);

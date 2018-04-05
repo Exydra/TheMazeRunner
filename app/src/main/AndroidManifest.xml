@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,17 +41,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Kaart"
-            android:label="@string/title_activity_kaart"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".RoutesKiezen"
             android:screenOrientation="portrait" />
         <activity
             android:name=".RegistrerenActivity"
             android:label="@string/title_activity_registreren"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Kaart"
+            android:label="@string/title_activity_navigation_drawer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
