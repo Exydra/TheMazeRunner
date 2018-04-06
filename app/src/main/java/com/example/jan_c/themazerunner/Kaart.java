@@ -80,6 +80,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     private TextView emailTextview;
     private TextView afstandTotVolgendePuntTextView;
     private TextView volgendePuntTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,28 +152,32 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         }
 
         //BegroetingsToast
-        Calendar c = Calendar.getInstance();
-        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER, 0,0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toastTekst = (TextView) toast.getView().findViewById(R.id.toast_text);
-        if(timeOfDay >= 0 && timeOfDay < 12){
-            toastTekst.setText("Goedemorgen " + Aanmelden.getInstance().loper.naam + "!");
-        }else if(timeOfDay >= 12 && timeOfDay < 16){
-            toastTekst.setText("Goedenmiddag " + Aanmelden.getInstance().loper.naam + "!");
-        }else if(timeOfDay >= 16 && timeOfDay < 21){
-            toastTekst.setText("Goedenavond " + Aanmelden.getInstance().loper.naam + "!");
-        }else if(timeOfDay >= 21 && timeOfDay < 24){
-            toastTekst.setText("Goede nacht " + Aanmelden.getInstance().loper.naam + "!");
+        if (Aanmelden.getInstance().BooleanToast == 0) {
+            Calendar c = Calendar.getInstance();
+            int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toastTekst = (TextView) toast.getView().findViewById(R.id.toast_text);
+            if (timeOfDay >= 0 && timeOfDay < 12) {
+                toastTekst.setText("Goedemorgen " + Aanmelden.getInstance().loper.naam + "!");
+            } else if (timeOfDay >= 12 && timeOfDay < 16) {
+                toastTekst.setText("Goedenmiddag " + Aanmelden.getInstance().loper.naam + "!");
+            } else if (timeOfDay >= 16 && timeOfDay < 21) {
+                toastTekst.setText("Goedenavond " + Aanmelden.getInstance().loper.naam + "!");
+            } else if (timeOfDay >= 21 && timeOfDay < 24) {
+                toastTekst.setText("Goede nacht " + Aanmelden.getInstance().loper.naam + "!");
+            }
+            toast.show();
+            afstandTotVolgendePuntTextView = findViewById(R.id.afstandTextview);
+            volgendePuntTextView = findViewById(R.id.VolgendePuntTextview);
+            volgendePuntTextView.setVisibility(View.INVISIBLE);
+            Aanmelden.getInstance().BooleanToast = 1;
         }
-        toast.show();
-        afstandTotVolgendePuntTextView = findViewById(R.id.afstandTextview);
-        volgendePuntTextView = findViewById(R.id.VolgendePuntTextview);
-        volgendePuntTextView.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -298,23 +303,30 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
                         //handelt de exeption af
                     } catch (Exception Locatie) {
-                        if (!geenLocatieError) {
-                            geenLocatieError = true;
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
-                            builder1.setMessage("Er is geen locatie beschikbaar");
-                            builder1.setCancelable(false);
-                            builder1.setPositiveButton(
-                                    "OK",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            geenLocatieError = false;
-                                            dialog.cancel();
-                                        }
-                                    });
 
-                            AlertDialog alert11 = builder1.create();
-                            alert11.show();
-                        }
+
+                            if (!geenLocatieError) {
+                                if (Aanmelden.getInstance().GeenLocatieMelding == 0) {
+                                    geenLocatieError = true;
+                                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
+                                    builder1.setMessage("Er is geen locatie beschikbaar. Gelieve te gaan naar: instellingen --> locatie --> toestaan");
+                                    builder1.setCancelable(false);
+                                    builder1.setPositiveButton(
+                                            "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    geenLocatieError = false;
+                                                    dialog.cancel();
+                                                }
+                                            });
+
+                                    AlertDialog alert11 = builder1.create();
+                                    alert11.show();
+                                    Aanmelden.getInstance().GeenLocatieMelding = 1;
+                                }
+                            }
+
+
                     }
                 } else {
                     timer.cancel();
