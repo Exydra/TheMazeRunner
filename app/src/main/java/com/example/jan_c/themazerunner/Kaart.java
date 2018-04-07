@@ -309,7 +309,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                 if (Aanmelden.getInstance().GeenLocatieMelding == 0) {
                                     geenLocatieError = true;
                                     AlertDialog.Builder builder1 = new AlertDialog.Builder(Kaart.this);
-                                    builder1.setMessage("Er is geen locatie beschikbaar. Gelieve te gaan naar: instellingen --> locatie --> toestaan.");
+                                    builder1.setMessage("Er is geen locatie beschikbaar.");
                                     builder1.setCancelable(false);
                                     builder1.setPositiveButton(
                                             "OK",
