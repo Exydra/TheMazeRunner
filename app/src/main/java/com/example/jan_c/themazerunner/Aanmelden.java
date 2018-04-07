@@ -7,7 +7,6 @@ public class Aanmelden  {
     String _email;
     String _password;
     Integer BooleanToast = 0;
-    Integer GeenLocatieMelding = 0;
     Loper loper;
     AanmeldenUitlezen aanmeldenUitlezen;
     private Aanmelden(){
