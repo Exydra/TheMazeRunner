@@ -39,10 +39,12 @@ import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -213,10 +215,9 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     public void onMapReady(final GoogleMap googleMap) {
 
         mMap = googleMap;
-
         //timer
         final TextView timerText = findViewById(R.id.timerTekst);
-        timer = new CountDownTimer(2000000000, 1000) {
+        timer = new CountDownTimer(2000000000, 3000) {
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
 
@@ -235,17 +236,17 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                         //huidige locatie
                         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                         Criteria criteria = new Criteria();
-                        Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                        final Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
                         huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
                         //update camera postie als er niet is gepauzeerd
-                        if (!gepauzeerd) {
-                            CameraPosition cameraPosition = new CameraPosition.Builder()
+                        if (!gepauzeerd & routeID==0) {
+                            final CameraPosition cameraPosition = new CameraPosition.Builder()
                                     .target(huidigeLocatie)
                                     .zoom(18)
                                     .bearing(myLocation.getBearing())
                                     .build();
-                            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                         }
 
                         //plaatst de gepaseerde punten in een lijst
@@ -265,6 +266,27 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
                             //plaatst de marker op de kaart
                             marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
+
+                            if(!gepauzeerd){
+                                LatLngBounds bounds = LatLngBounds.builder()
+                                        .include(huidigeLocatie)
+                                        .include(marker.getPosition())
+                                        .build();
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300),new GoogleMap.CancelableCallback(){
+                                    @Override
+                                    public void onCancel() {
+                                        //DO SOMETHING HERE IF YOU WANT TO REACT TO A USER TOUCH WHILE ANIMATING
+                                    }
+                                    @Override
+                                    public void onFinish() {
+                                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                                                .target(mMap.getCameraPosition().target)
+                                                .zoom(mMap.getCameraPosition().zoom)
+                                                .bearing(myLocation.getBearing())
+                                                .build()));
+                                    }
+                                });
+                            }
 
                             //berekend afstand tot volgende punt
                             Double afstand = afstand(huidigeLocatie,marker.getPosition());
@@ -367,7 +389,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                 PauzeButton.setText("Hervatten");
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(huidigeLocatie)
-                        .zoom(13)
+                        .zoom(14)
                         .build();
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             } else {
