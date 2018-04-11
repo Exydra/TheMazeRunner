@@ -353,7 +353,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     toast.setDuration(Toast.LENGTH_LONG);
                     toast.setView(layout);
                     toastTekst = (TextView) toast.getView().findViewById(R.id.toast_text);
-                    toastTekst.setText("Gefeliciteerd, de route is geslaagd!");
+                    toastTekst.setText("Gefeliciteerd, de route is geslaagd.");
                     toast.show();
 
                 }
