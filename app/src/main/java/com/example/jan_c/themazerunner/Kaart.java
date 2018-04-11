@@ -195,15 +195,12 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         if (id == R.id.nav_routes) {
             Intent routesKiezenIntent = new Intent(getApplicationContext(), RoutesKiezen.class);
             startActivity(routesKiezenIntent);
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_logout) {
+        // uitloggen & variabelen resetten
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_help) {
 
         }
 
@@ -346,6 +343,19 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     }
                 } else {
                     timer.cancel();
+                    // Hier felicitatieboodschap
+
+                    Calendar c = Calendar.getInstance();
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toastTekst = (TextView) toast.getView().findViewById(R.id.toast_text);
+                    toastTekst.setText("Gefeliciteerd, de route is geslaagd!");
+                    toast.show();
+
                 }
 
             }
@@ -354,6 +364,8 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             }
 
         }.start();
+
+
     }
 
     //stelt de stijl van de polyline in
