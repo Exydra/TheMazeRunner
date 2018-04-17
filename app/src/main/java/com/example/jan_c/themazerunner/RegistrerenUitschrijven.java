@@ -17,6 +17,7 @@ import java.net.URL;
 public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
     Loper loper;
     String data = "";
+    String error = "";
     public  RegistrerenUitschrijven(String naam, String wachtwoord, String email){
         loper = new Loper();
       loper.naam = naam;
@@ -37,11 +38,20 @@ public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
                 line = bufferedReader.readLine();
                 data = data + line;
             }
+            if (!HTMLtoJSON(data).equals("")){
+                error = HTMLtoJSON(data);
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+    public String HTMLtoJSON(String HTML){
+        Integer begin = HTML.indexOf("%") + 1;
+        Integer einde = HTML.indexOf("$");
+        String JSON = HTML.substring(begin, einde).trim();
+        return JSON;
     }
 }

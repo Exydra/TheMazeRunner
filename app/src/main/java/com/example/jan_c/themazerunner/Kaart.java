@@ -292,6 +292,15 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
                             //kijkt of de loper aan de marker is
                             if (afstand(huidigeLocatie, marker.getPosition()) < 0.005) {
+                                //update time
+                                UpdateTimeUitshrijven updateTimeUitshrijven = new UpdateTimeUitshrijven(lijstmarkers.get(couterMarkers).markerID);
+                                try {
+                                    updateTimeUitshrijven.execute().get();
+                                }catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                }
                                 couterMarkers += 1;
                             }
                         }
