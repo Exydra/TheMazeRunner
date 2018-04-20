@@ -82,6 +82,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     private TextView emailTextview;
     private TextView afstandTotVolgendePuntTextView;
     private TextView volgendePuntTextView;
+    private   Location myLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,12 +234,12 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                         //huidige locatie
                         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                         Criteria criteria = new Criteria();
-                        final Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                         myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
                         huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
                         //update camera postie als er niet is gepauzeerd
                         if (!gepauzeerd & routeID==0) {
-                            final CameraPosition cameraPosition = new CameraPosition.Builder()
+                             CameraPosition cameraPosition = new CameraPosition.Builder()
                                     .target(huidigeLocatie)
                                     .zoom(18)
                                     .bearing(myLocation.getBearing())

@@ -18,16 +18,13 @@ public class UpdateTimeUitshrijven  extends AsyncTask<Void,Void,Void> {
     String data = "";
     Integer loperID;
     Integer _markerID;
-    String currentTime;
 
     public UpdateTimeUitshrijven(Integer markerID){
        loperID = Aanmelden.getInstance().loper.loperID;
        _markerID = markerID;
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        currentTime = dateFormatter.format(Calendar.getInstance().getTime());
     }
     protected Void doInBackground(Void... voids) {
-        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=updatetijdstipaankomst&loperid="+ loperID + "&markerid=" + _markerID + "&tijdstip=" + currentTime;
+        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=updatetijdstipaankomst&loperid="+ loperID + "&markerid=" + _markerID;
         HttpURLConnection httpURLConnection;
         try {
             URL url = new URL(URl);
