@@ -61,18 +61,33 @@ public class RegistrerenActivity extends AppCompatActivity {
 
 
                 else {
-                {
-                     RegistrerenUitschrijven registrerenUitschrijven = new RegistrerenUitschrijven(naamEditText.getText().toString(), wachtWoordEditText.getText().toString(), emailEditText.getText().toString());
-                    try {
-                        registrerenUitschrijven.execute().get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(loginActivity);
-                }}
+                    {
+                        RegistrerenUitschrijven registrerenUitschrijven = new RegistrerenUitschrijven(naamEditText.getText().toString(), wachtWoordEditText.getText().toString(), emailEditText.getText().toString());
+                        try {
+                            registrerenUitschrijven.execute().get();
+
+                            if (registrerenUitschrijven.error.equals("Dit e-mail adres word al reeds gebruikt , gelieven een ander optegeven of inteloggen met uw bestaande."))
+                            {
+                                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
+                                dlgAlert.setMessage("Dit e-mail adres bestaat al.");
+                                dlgAlert.setTitle("Error");
+                                dlgAlert.setPositiveButton("OK", null);
+                                dlgAlert.setCancelable(false);
+                                dlgAlert.create().show();
+                            }
+                            else
+                            {
+                                Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(loginActivity);
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+                    }}
 
             }catch (Exception exeption){
                 AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
@@ -87,28 +102,28 @@ public class RegistrerenActivity extends AppCompatActivity {
 
     //controle email
     public int emailTest(String email) {
-    Integer apenstaartje = email.toString().indexOf("@");
-    Integer punt = email.toString().indexOf(".");
-    Integer lengteEmail = email.toString().length();
+        Integer apenstaartje = email.toString().indexOf("@");
+        Integer punt = email.toString().indexOf(".");
+        Integer lengteEmail = email.toString().length();
 
 
-    Integer Resultaat = 0;
-            if (apenstaartje == -1 | punt == -1)
-            {
-                Resultaat = 0;
-            }
-            else
-            {
-                Resultaat = 1;
-            }
-            // controle voor letters voor het apenstaartje
-            if (apenstaartje == 0) {Resultaat = 0;}
-            // controle voor letters tussen apenstaartje en punt
-            if (punt - apenstaartje == 1) {Resultaat = 0;}
-            // controle voor letters na het punt
-            if (lengteEmail - punt == 1 | lengteEmail - punt == 2) {Resultaat = 0;}
+        Integer Resultaat = 0;
+        if (apenstaartje == -1 | punt == -1)
+        {
+            Resultaat = 0;
+        }
+        else
+        {
+            Resultaat = 1;
+        }
+        // controle voor letters voor het apenstaartje
+        if (apenstaartje == 0) {Resultaat = 0;}
+        // controle voor letters tussen apenstaartje en punt
+        if (punt - apenstaartje == 1) {Resultaat = 0;}
+        // controle voor letters na het punt
+        if (lengteEmail - punt == 1 | lengteEmail - punt == 2) {Resultaat = 0;}
 
-            return Resultaat;
+        return Resultaat;
     }
 
 

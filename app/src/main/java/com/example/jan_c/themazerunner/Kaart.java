@@ -200,7 +200,12 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
         } else if (id == R.id.nav_logout) {
         // uitloggen & variabelen resetten
-
+            Intent uitloggen = new Intent(getApplicationContext(), LoginActivity.class);
+           Aanmelden aanmelden = Aanmelden.getInstance();
+           aanmelden._email="";
+           aanmelden._password="";
+           aanmelden.loper = null;
+            startActivity(uitloggen);
         } else if (id == R.id.nav_help) {
 
         }

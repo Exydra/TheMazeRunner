@@ -20,9 +20,9 @@ public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
     String error = "";
     public  RegistrerenUitschrijven(String naam, String wachtwoord, String email){
         loper = new Loper();
-      loper.naam = naam;
-      loper.wachtwoord = wachtwoord;
-      loper.email = email;
+        loper.naam = naam;
+        loper.wachtwoord = wachtwoord;
+        loper.email = email;
     }
     @Override
     protected Void doInBackground(Void... voids) {
@@ -49,8 +49,8 @@ public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
         return null;
     }
     public String HTMLtoJSON(String HTML){
-        Integer begin = HTML.indexOf("%") + 1;
-        Integer einde = HTML.indexOf("$");
+        Integer begin = HTML.indexOf("%") + 2;
+        Integer einde = HTML.indexOf("$") - 1;
         String JSON = HTML.substring(begin, einde).trim();
         return JSON;
     }
