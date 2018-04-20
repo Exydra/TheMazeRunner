@@ -13,7 +13,7 @@ public class Aanmelden  {
         loper = new Loper();
     }
 
-    private static Aanmelden instance = null;
+    static Aanmelden instance = null;
 
     public static Aanmelden getInstance()  {
         if(instance == null) {
