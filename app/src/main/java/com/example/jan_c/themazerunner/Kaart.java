@@ -203,6 +203,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             Aanmelden.instance = null;
             Intent uitloggen = new Intent(getApplicationContext(), LoginActivity.class);
             uitloggen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Aanmelden.getInstance().BooleanToast = true;
             startActivity(uitloggen);
         } else if (id == R.id.nav_help) {
 
@@ -308,7 +309,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                 couterMarkers += 1;
                             }
                         }
-                        if(!geenLocatieError & Aanmelden.getInstance().BooleanToast == 0) {
+                        if(!geenLocatieError & Aanmelden.getInstance().BooleanToast == false) {
                             //BegroetingsToast
                             Calendar c = Calendar.getInstance();
                             int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
@@ -330,7 +331,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             }
 
 
-                            Aanmelden.getInstance().BooleanToast = 1;
+                            Aanmelden.getInstance().BooleanToast = true;
                             toast.show();
 
                         }

@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutionException;
 public class Aanmelden  {
     String _email;
     String _password;
-    Integer BooleanToast = 0;
+    Boolean BooleanToast = false;
     Loper loper;
     AanmeldenUitlezen aanmeldenUitlezen;
     private Aanmelden(){
