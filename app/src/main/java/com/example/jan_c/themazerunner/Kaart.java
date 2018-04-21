@@ -358,7 +358,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     timer.cancel();
                     // Hier felicitatieboodschap
 
-                    Calendar c = Calendar.getInstance();
                     LayoutInflater inflater = getLayoutInflater();
                     View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
                     Toast toast = new Toast(getApplicationContext());
@@ -418,7 +417,9 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                         .build();
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             } else {
-                timer.start();
+               if (couterMarkers != aantalMarkers) {
+                   timer.start();
+               }
                 gepauzeerd = false;
                 PauzeButton.setText("Bekijk");
             }
