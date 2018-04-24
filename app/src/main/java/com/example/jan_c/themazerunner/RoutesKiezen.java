@@ -52,28 +52,33 @@ public class RoutesKiezen extends AppCompatActivity {
     }
     class kiesParcourButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-            Intent kaartIntent = new Intent(getApplicationContext(), Kaart.class);
-            Integer idOfSelected = -1;
-            idOfSelected = radioGroup.getCheckedRadioButtonId();
-            if (idOfSelected == -1){
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(RoutesKiezen.this);
-                builder1.setMessage("U moet een parcour kiezen");
-                builder1.setCancelable(false);
-                builder1.setPositiveButton(
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-            }else{
+            if (getIntent().getBooleanExtra("rankingBoolean", false) == false) {
+                Intent kaartIntent = new Intent(getApplicationContext(), Kaart.class);
+                Integer idOfSelected = -1;
                 idOfSelected = radioGroup.getCheckedRadioButtonId();
-                kaartIntent.putExtra("parcourID", parcourDictionary.get(idOfSelected-1));
-                startActivity(kaartIntent);
+                if (idOfSelected == -1) {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(RoutesKiezen.this);
+                    builder1.setMessage("U moet een parcour kiezen");
+                    builder1.setCancelable(false);
+                    builder1.setPositiveButton(
+                            "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                } else {
+                    idOfSelected = radioGroup.getCheckedRadioButtonId();
+                    kaartIntent.putExtra("parcourID", parcourDictionary.get(idOfSelected - 1));
+                    startActivity(kaartIntent);
+                }
+            }else {
+                //TODO: door linken naar ranking
             }
-        }}
+        }
+    }
 }
 
 

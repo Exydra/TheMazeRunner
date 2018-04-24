@@ -3,7 +3,7 @@ package com.example.jan_c.themazerunner;
 
 import java.util.concurrent.ExecutionException;
 
-public class Aanmelden  {
+public class Aanmelden   {
     String _email;
     String _password;
     Boolean BooleanToast = false;
