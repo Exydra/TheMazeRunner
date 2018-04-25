@@ -52,7 +52,6 @@ public class RoutesKiezen extends AppCompatActivity {
     }
     class kiesParcourButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-            if (getIntent().getBooleanExtra("rankingBoolean", false) == false) {
                 Intent kaartIntent = new Intent(getApplicationContext(), Kaart.class);
                 Integer idOfSelected = -1;
                 idOfSelected = radioGroup.getCheckedRadioButtonId();
@@ -74,9 +73,6 @@ public class RoutesKiezen extends AppCompatActivity {
                     kaartIntent.putExtra("parcourID", parcourDictionary.get(idOfSelected - 1));
                     startActivity(kaartIntent);
                 }
-            }else {
-                //TODO: door linken naar ranking
-            }
         }
     }
 }

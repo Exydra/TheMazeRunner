@@ -195,7 +195,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
         if (id == R.id.nav_routes) {
             Intent routesKiezenIntent = new Intent(getApplicationContext(), RoutesKiezen.class);
-            routesKiezenIntent.putExtra("rankingBoolean", false);
             startActivity(routesKiezenIntent);
         } else if (id == R.id.nav_manage) {
 
@@ -210,9 +209,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
         }
         else if (id == R.id.nav_ranking){
-            Intent routesKiezenIntent = new Intent(getApplicationContext(), RoutesKiezen.class);
-            routesKiezenIntent.putExtra("rankingBoolean", true);
-            startActivity(routesKiezenIntent);
+            //TODO: linken naar ranschikkingActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
