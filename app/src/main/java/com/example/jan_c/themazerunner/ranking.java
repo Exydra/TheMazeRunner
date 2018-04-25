@@ -10,12 +10,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ranking extends AppCompatActivity {
 
     Spinner spinner;
-    ArrayAdapter<CharSequence> adapter;
-    String[] items = new String[]{ "Office", "Home", "College", "Uncle's Home", "CoDebuggers"};
-    String[] itemsId = new String[]{ "4", "8", "9", "10","55"};
+    // ArrayAdapter<CharSequence> adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,20 +25,17 @@ public class ranking extends AppCompatActivity {
         setContentView(R.layout.activity_ranking);
         spinner = (Spinner) findViewById(R.id.routeSpinner);
 
-
-
-
-        adapter = ArrayAdapter.createFromResource(this, R.array.routeNamen, android.R.layout.simple_spinner_item);
-
-
-
-
-
+        List<String> list = new ArrayList<>();
+        list.add("prutser");
+        list.add("oke");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
                 Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+" is geselecteerd.",Toast.LENGTH_LONG).show();
             }
 
