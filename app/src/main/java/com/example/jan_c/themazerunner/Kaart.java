@@ -209,7 +209,8 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
         }
         else if (id == R.id.nav_ranking){
-            //TODO: linken naar ranschikkingActivity
+            Intent ranking = new Intent(getApplicationContext(), ranking.class);
+            startActivity(ranking);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

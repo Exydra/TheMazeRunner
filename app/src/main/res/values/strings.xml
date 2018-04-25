@@ -32,4 +32,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string-array name="routeNamen">
+        <item>Route 1</item>
+        <item>Route 2</item>
+        <item>Route 3</item>
+    </string-array>
 </resources>

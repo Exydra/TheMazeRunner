@@ -21,13 +21,14 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_vpn_key_black_24dp"
-                android:title="Uitloggen" />
-            <item
                 android:id="@+id/nav_help"
                 android:icon="@drawable/ic_help_black_24dp"
                 android:title="Help" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_vpn_key_black_24dp"
+                android:title="Uitloggen" />
+
         </menu>
     </item>
 
