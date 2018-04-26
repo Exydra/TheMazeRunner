@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class KlassementUitlezen extends AsyncTask<Void,Void,Void> {
     String data = "";
     Integer _parcourID;
-    ArrayList<Tijd> klassement;
+    ArrayList<Tijd> klassement = new ArrayList<>();
     public KlassementUitlezen(Integer parcourID){
      _parcourID = parcourID;
     }
@@ -55,8 +55,8 @@ public class KlassementUitlezen extends AsyncTask<Void,Void,Void> {
         return null;
     }
     public String HTMLtoJSON(String HTML){
-        Integer begin = HTML.indexOf("%") + 1;
-        Integer einde = HTML.indexOf("$");
+        Integer begin = HTML.indexOf("%") + 2;
+        Integer einde = HTML.indexOf("$") -1;
         String JSON = HTML.substring(begin, einde).trim();
         return JSON;
     }

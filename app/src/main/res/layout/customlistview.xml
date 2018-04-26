@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+     android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/RankingtextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="16dp"
+        android:text="1."
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/NaamtextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/RankingtextView"
+        android:layout_alignBottom="@+id/RankingtextView"
+        android:layout_marginStart="33dp"
+        android:layout_toEndOf="@+id/RankingtextView"
+        android:text="TextView"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/TijdtextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/NaamtextView"
+        android:layout_marginStart="66dp"
+        android:layout_toEndOf="@+id/NaamtextView"
+        android:text="TextView"
+        android:textSize="18sp" />
+</RelativeLayout>
