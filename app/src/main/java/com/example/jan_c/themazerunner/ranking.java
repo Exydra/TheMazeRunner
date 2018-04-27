@@ -28,7 +28,6 @@ public class ranking extends AppCompatActivity {
     String[] tijd;
     String[] naam;
     ArrayList<Tijd> klassement;
-    Integer klassementLengte;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +75,6 @@ public class ranking extends AppCompatActivity {
                     tijd[i] = klassement.get(i).tijd;
                     naam[i] = klassement.get(i).naam;
                 }
-                klassementLengte = klassement.size();
                  ListView theListView = (ListView) findViewById(R.id.theListView);
                CustomAdapter customAdapter = new CustomAdapter();
                 theListView.setAdapter(customAdapter);
@@ -96,7 +94,7 @@ public class ranking extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return klassementLengte;
+            return klassement.size();
         }
 
         @Override
@@ -118,8 +116,7 @@ public class ranking extends AppCompatActivity {
 
             naamTextView.setText(naam[position]);
             tijdTextView.setText(tijd[position]);
-            rankingTextView.setText(position);
-
+            rankingTextView.setText(String.valueOf(position+1));
             return convertView;
         }
     }
