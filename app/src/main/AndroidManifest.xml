@@ -52,9 +52,12 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ranking" />
-        <activity android:name=".help" />
-        <activity android:name=".uitgelogd"></activity>
+        <activity android:name=".ranking"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".help"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".uitgelogd"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
