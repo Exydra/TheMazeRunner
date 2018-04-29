@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.maps.model.TileOverlay;
 
 import java.text.DecimalFormat;
@@ -83,10 +86,17 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     private TextView afstandTotVolgendePuntTextView;
     private TextView volgendePuntTextView;
     private   Location myLocation;
+    private LatLngBounds bounds;
+    private float zoom;
+    private  CameraPosition cameraPosition;
+    final static int GLOBE_WIDTH = 256; // a constant in Google's map projection
+    final static int ZOOM_MAX = 21;
+    private Fragment map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerLayout.addDrawerListener(
                 new DrawerLayout.DrawerListener() {
@@ -157,6 +167,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         afstandTotVolgendePuntTextView = findViewById(R.id.afstandTextview);
         volgendePuntTextView = findViewById(R.id.VolgendePuntTextview);
         volgendePuntTextView.setVisibility(View.INVISIBLE);
+        map = getSupportFragmentManager().findFragmentById(R.id.map);
     }
 
     @Override
@@ -264,7 +275,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             if (huidigeLocatie != null) {
                                 GepaseerdePunten.add(huidigeLocatie);
                             }
-
                             //plaatst de polyline met de gepaseerde punten op de kaart
                             if (GepaseerdePunten.size() != 0) {
                                 Gepaseerd = mMap.addPolyline(new PolylineOptions()
@@ -277,33 +287,24 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
 
                             if(!gepauzeerd){
-                                LatLngBounds bounds = LatLngBounds.builder()
+                                 bounds = LatLngBounds.builder ()
                                         .include(huidigeLocatie)
                                         .include(marker.getPosition())
                                         .build();
-                                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 300),new GoogleMap.CancelableCallback(){
-                                    @Override
-                                    public void onCancel() {
-                                        //DO SOMETHING HERE IF YOU WANT TO REACT TO A USER TOUCH WHILE ANIMATING
+                                 cameraPosition = new CameraPosition.Builder()
+                                        .bearing(myLocation.getBearing())
+                                        .target(bounds.getCenter())
+                                        .zoom(getBoundsZoomLevel(bounds.northeast, bounds.southwest,map.getView().getWidth()/4, map.getView().getHeight()/4))
+                                        .build();
+                                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                     }
-                                    @Override
-                                    public void onFinish() {
-                                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
-                                                .target(mMap.getCameraPosition().target)
-                                                .zoom(mMap.getCameraPosition().zoom)
-                                                .bearing(myLocation.getBearing())
-                                                .build()));
-                                    }
-                                });
-                            }
-
                             //berekend afstand tot volgende punt
                             Double afstand = afstand(huidigeLocatie,marker.getPosition());
                             DecimalFormat decimalFormat = new DecimalFormat("#0.000");
                             afstandTotVolgendePuntTextView.setText(decimalFormat.format(afstand));
 
                             //kijkt of de loper aan de marker is
-                            if (afstand(huidigeLocatie, marker.getPosition()) < 0.005) {
+                            if (afstand(huidigeLocatie, marker.getPosition()) < 0.020) {
                                 //update time
                                 UpdateTimeUitshrijven updateTimeUitshrijven = new UpdateTimeUitshrijven(lijstmarkers.get(couterMarkers).markerID);
                                 try {
@@ -393,7 +394,8 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         polyline.setWidth(20);
         polyline.setColor(rgb(146, 46, 76));
         polyline.setJointType(JointType.ROUND);
-        polyline.setPattern(DOTTED);
+        polyline.setEndCap(new RoundCap());
+        polyline.setStartCap(new RoundCap());
     }
 
     //berekend de afstand tussen 2 punten
@@ -432,6 +434,25 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                 PauzeButton.setText("Bekijk");
             }
         }
+    }
+    public int getBoundsZoomLevel(LatLng northeast,LatLng southwest,
+                                       int width, int height) {
+        double latFraction = (latRad(northeast.latitude) - latRad(southwest.latitude)) / Math.PI;
+        double lngDiff = northeast.longitude - southwest.longitude;
+        double lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+        double latZoom = zoom(height, GLOBE_WIDTH, latFraction);
+        double lngZoom = zoom(width, GLOBE_WIDTH, lngFraction);
+        double zoom = Math.min(Math.min(latZoom, lngZoom),ZOOM_MAX);
+        return (int)(zoom);
+    }
+    private double latRad(double lat) {
+        double sin = Math.sin(lat * Math.PI / 180);
+        double radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+        return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+    }
+    private double zoom(double mapPx, double worldPx, double fraction) {
+        final double LN2 = .693147180559945309417;
+        return (Math.log(mapPx / worldPx / fraction) / LN2);
     }
 
 }
