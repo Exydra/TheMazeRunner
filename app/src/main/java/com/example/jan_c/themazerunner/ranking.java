@@ -28,6 +28,8 @@ public class ranking extends AppCompatActivity {
     String[] tijd;
     String[] naam;
     ArrayList<Tijd> klassement;
+    TextView naamTextview;
+    TextView tijdTextview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class ranking extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ///position = id
                 KlassementUitlezen klassementUitlezen = new KlassementUitlezen(parcourDictionary.get(position));
+
                 try {
                     klassementUitlezen.execute().get();
                 } catch (InterruptedException e) {
@@ -68,6 +71,8 @@ public class ranking extends AppCompatActivity {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
+
+
                 klassement = klassementUitlezen.klassement;
                tijd = new String[klassement.size()];
                naam = new String[klassement.size()];
@@ -80,7 +85,26 @@ public class ranking extends AppCompatActivity {
                 theListView.setAdapter(customAdapter);
 
                  Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+" is geselecteerd.",Toast.LENGTH_LONG).show();
-            }
+
+           // code hier voor eigen tijd bij route
+            TotaalTijdUitlezen totaalTijdUitlezen = new TotaalTijdUitlezen(parcourDictionary.get(position),Aanmelden.getInstance().loper.loperID);
+                try {
+                    totaalTijdUitlezen.execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                if (totaalTijdUitlezen.error.equals("error nog invullen hier"))
+                {
+                    naamTextview.setText("U hebt dit parcour nog niet gedaan.");
+                    tijdTextview.setText(" ");
+                }
+                else {
+              naamTextview.setText(Aanmelden.getInstance().loper.naam);
+                tijdTextview.setText(totaalTijdUitlezen.totaaltijd);
+            }}
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -88,6 +112,8 @@ public class ranking extends AppCompatActivity {
             }
         });
 
+       naamTextview = (TextView) findViewById(R.id.naamtextView);
+       tijdTextview = (TextView) findViewById(R.id.tijdtextView);
 
     }
     class CustomAdapter extends BaseAdapter{

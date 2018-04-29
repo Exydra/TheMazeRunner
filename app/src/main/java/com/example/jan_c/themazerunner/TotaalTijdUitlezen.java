@@ -19,12 +19,13 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
     Integer _parcourID;
     Integer _loperID;
     String totaaltijd;
+    String error = "";
     public TotaalTijdUitlezen(Integer parcourID, Integer loperID){
         _parcourID = parcourID;
         _loperID = loperID;
     }
     protected Void doInBackground(Void... voids) {
-        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=gettotaaltijd&parcourid=" + _parcourID + "&loperid=" + _loperID;
+        String URl = "http://ineke.broeders.be/themazerunner/Get.aspx?do=gettotaaltijd&Loperid=" + _loperID + "&Parcourid="  + _parcourID;
         HttpURLConnection httpURLConnection;
         try {
             URL url = new URL(URl);
@@ -35,6 +36,9 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
             while (line != null) {
                 line = bufferedReader.readLine();
                 data = data + line;
+            }
+            if (!HTMLtoJSON(data).equals("")){
+                error = HTMLtoJSON(data);
             }
             data = HTMLtoJSON(data);
             JSONArray JA = new JSONArray(data);
@@ -49,8 +53,8 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
         return null;
     }
     public String HTMLtoJSON(String HTML){
-        Integer begin = HTML.indexOf("%") + 1;
-        Integer einde = HTML.indexOf("$");
+        Integer begin = HTML.indexOf("%") + 2;
+        Integer einde = HTML.indexOf("$")-1;
         String JSON = HTML.substring(begin, einde).trim();
         return JSON;
     }

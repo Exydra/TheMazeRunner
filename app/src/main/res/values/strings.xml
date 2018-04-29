@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">TheMazeRunner</string>
+    <string name="app_name">The Maze Runner</string>
     <string name="title_activity_kaart">Map</string>
-    <string name="title_activity_login">TheMazeRunner</string>
+    <string name="title_activity_login">The Maze Runner</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -38,4 +38,6 @@
         <item>Route 2</item>
         <item>Route 3</item>
     </string-array>
+    <string name="title_activity_help">help</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

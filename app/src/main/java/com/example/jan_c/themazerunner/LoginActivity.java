@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import java.util.Objects;
 
@@ -22,6 +24,7 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
     private Button inlogButton;
     private Button registrereButton;
+    private ProgressBar inloggenProgressBar;
     public AutoCompleteTextView emailEditText;
     public EditText passwoordEditText;
     String leeg = "";
@@ -40,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         registrereButton = (Button) findViewById(R.id.RegistrerenButton);
         registrereButton.setOnClickListener(new registrerenButtonClick());
         mLayout = findViewById(R.id.linearLayout);
+        inloggenProgressBar = (ProgressBar) findViewById(R.id.inloggenProgressbar);
+        inloggenProgressBar.setVisibility(View.INVISIBLE);
     }
 
 
@@ -47,11 +52,19 @@ public class LoginActivity extends AppCompatActivity {
     class inlogButtonClick implements View.OnClickListener {
         public void onClick(View view) {
 
+
+
             //controleert of er locatie promision is
             if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 requestCameraPermission();
             } else {
+
+
+                inloggenProgressBar.setVisibility(View.VISIBLE);
+                Handler handler2 = new Handler();
+                handler2.postDelayed(new Runnable() {
+                    public void run() {
 
                 //logt de loper in
                 try {
@@ -90,6 +103,8 @@ public class LoginActivity extends AppCompatActivity {
                     dlgAlert.setCancelable(false);
                     dlgAlert.create().show();
                 }
+            }
+        }, 500);
             }
         }
     }
