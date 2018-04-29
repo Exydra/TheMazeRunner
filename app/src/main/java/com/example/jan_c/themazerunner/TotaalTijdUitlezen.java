@@ -37,24 +37,22 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
                 line = bufferedReader.readLine();
                 data = data + line;
             }
-            if (!HTMLtoJSON(data).equals("")){
+            if (HTMLtoJSON(data).equals("00:00:00")){
                 error = HTMLtoJSON(data);
             }
             data = HTMLtoJSON(data);
-            JSONArray JA = new JSONArray(data);
             totaaltijd = data;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         return null;
     }
+
     public String HTMLtoJSON(String HTML){
-        Integer begin = HTML.indexOf("%") + 2;
-        Integer einde = HTML.indexOf("$")-1;
+        Integer begin = HTML.indexOf("%") + 3;
+        Integer einde = HTML.indexOf("$")-2;
         String JSON = HTML.substring(begin, einde).trim();
         return JSON;
     }

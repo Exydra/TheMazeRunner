@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -30,6 +32,9 @@ public class ranking extends AppCompatActivity {
     ArrayList<Tijd> klassement;
     TextView naamTextview;
     TextView tijdTextview;
+    TextView nummerTextview;
+    TextView errorTextview;
+    TextView uwscore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,11 @@ public class ranking extends AppCompatActivity {
         setContentView(R.layout.activity_ranking);
         spinner = (Spinner) findViewById(R.id.routeSpinner);
         List<String> list = new ArrayList<>();
+        naamTextview = (TextView) findViewById(R.id.naamtextView);
+        tijdTextview = (TextView) findViewById(R.id.tijdtextView);
+        nummerTextview = (TextView) findViewById(R.id.nummerTextView);
+        errorTextview = (TextView) findViewById(R.id.errorTextview);
+        uwscore = (TextView) findViewById(R.id.UwScoreTextView);
 
         getParcoursUitlezen getParcoursUitlezen = new getParcoursUitlezen();
         parcourDictionary = new Hashtable<>();
@@ -97,12 +107,21 @@ public class ranking extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (totaalTijdUitlezen.error.equals("error nog invullen hier"))
+                if (totaalTijdUitlezen.error.equals("00:00:00"))
                 {
-                    naamTextview.setText("U hebt dit parcour nog niet gedaan.");
-                    tijdTextview.setText(" ");
+                    errorTextview.setText("U hebt dit parcour nog niet gedaan.");
+                    errorTextview.setVisibility(View.VISIBLE);
+                    naamTextview.setVisibility(View.INVISIBLE);
+                    tijdTextview.setVisibility(View.INVISIBLE);
+                    nummerTextview.setVisibility(View.INVISIBLE);
+                    uwscore.setVisibility(View.INVISIBLE);
                 }
                 else {
+                    errorTextview.setVisibility(View.INVISIBLE);
+                    naamTextview.setVisibility(View.VISIBLE);
+                    tijdTextview.setVisibility(View.VISIBLE);
+                    nummerTextview.setVisibility(View.VISIBLE);
+                    uwscore.setVisibility(View.VISIBLE);
               naamTextview.setText(Aanmelden.getInstance().loper.naam);
                 tijdTextview.setText(totaalTijdUitlezen.totaaltijd);
             }}
@@ -113,8 +132,8 @@ public class ranking extends AppCompatActivity {
             }
         });
 
-       naamTextview = (TextView) findViewById(R.id.naamtextView);
-       tijdTextview = (TextView) findViewById(R.id.tijdtextView);
+
+
 
     }
     class CustomAdapter extends BaseAdapter{
