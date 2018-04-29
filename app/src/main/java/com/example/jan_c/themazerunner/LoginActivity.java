@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (loper.email.equals(aanmelden._email) & loper.wachtwoord.equals(aanmelden._password)) {
                             kaartIntent = new Intent(getApplicationContext(), Kaart.class);
                             Aanmelden.getInstance().BooleanToast=false;
+                            kaartIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(kaartIntent);
                         } else {
                             AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);

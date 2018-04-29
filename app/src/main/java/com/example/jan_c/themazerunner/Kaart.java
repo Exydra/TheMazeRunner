@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,16 +89,18 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     private TextView volgendePuntTextView;
     private   Location myLocation;
     private LatLngBounds bounds;
-    private float zoom;
     private  CameraPosition cameraPosition;
     final static int GLOBE_WIDTH = 256; // a constant in Google's map projection
     final static int ZOOM_MAX = 21;
     private Fragment map;
+    private ProgressBar loader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        loader = (ProgressBar) findViewById(R.id.klassementProgressbar);
+        loader.setVisibility(View.INVISIBLE);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerLayout.addDrawerListener(
                 new DrawerLayout.DrawerListener() {
@@ -176,7 +180,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
         }
     }
 
@@ -221,8 +225,18 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             startActivity(help);
         }
         else if (id == R.id.nav_ranking){
-            Intent ranking = new Intent(getApplicationContext(), ranking.class);
-            startActivity(ranking);
+            loader.setVisibility(View.VISIBLE);
+            Handler handler2 = new Handler();
+            handler2.postDelayed(new Runnable() {
+                public void run() {
+                    loader.setVisibility(View.INVISIBLE);
+                    Intent ranking = new Intent(getApplicationContext(), ranking.class);
+                    startActivity(ranking);
+
+                }
+            }, 2000);
+
+
         }
 
 
@@ -377,6 +391,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     toastTekst.setText("Gefeliciteerd, de route is geslaagd!");
                     toast.show();
 
+
                 }
 
             }
@@ -454,5 +469,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         final double LN2 = .693147180559945309417;
         return (Math.log(mapPx / worldPx / fraction) / LN2);
     }
+
 
 }
