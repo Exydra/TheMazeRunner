@@ -2,6 +2,7 @@ package com.example.jan_c.themazerunner;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,15 +37,26 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-         inlogButton = (Button) findViewById(R.id.email_sign_in_button);
-        inlogButton.setOnClickListener(new inlogButtonClick());
-        emailEditText = (AutoCompleteTextView) findViewById(R.id.email);
-        passwoordEditText = (EditText) findViewById(R.id.password);
-        registrereButton = (Button) findViewById(R.id.RegistrerenButton);
-        registrereButton.setOnClickListener(new registrerenButtonClick());
-        mLayout = findViewById(R.id.linearLayout);
-        inloggenProgressBar = (ProgressBar) findViewById(R.id.inloggenProgressbar);
-        inloggenProgressBar.setVisibility(View.INVISIBLE);
+        SharedPreferences sp1=this.getSharedPreferences("Login", MODE_PRIVATE);
+        if(sp1.getString("email", null) == null | sp1.getString("wachtwoord", null) == null) {
+            inlogButton = (Button) findViewById(R.id.email_sign_in_button);
+            inlogButton.setOnClickListener(new inlogButtonClick());
+            emailEditText = (AutoCompleteTextView) findViewById(R.id.email);
+            passwoordEditText = (EditText) findViewById(R.id.password);
+            registrereButton = (Button) findViewById(R.id.RegistrerenButton);
+            registrereButton.setOnClickListener(new registrerenButtonClick());
+            mLayout = findViewById(R.id.linearLayout);
+            inloggenProgressBar = (ProgressBar) findViewById(R.id.inloggenProgressbar);
+            inloggenProgressBar.setVisibility(View.INVISIBLE);
+        } else {
+            aanmelden = Aanmelden.getInstance();
+            aanmelden._email = sp1.getString("email", null);
+            aanmelden._password = sp1.getString("wachtwoord", null);
+            aanmelden.BooleanToast=false;
+            aanmelden.doAanmeldenUitlezen();
+            kaartIntent = new Intent(getApplicationContext(), Kaart.class);
+            startActivity(kaartIntent);
+        }
     }
 
 
@@ -85,6 +97,11 @@ public class LoginActivity extends AppCompatActivity {
                             kaartIntent = new Intent(getApplicationContext(), Kaart.class);
                             Aanmelden.getInstance().BooleanToast=false;
                             kaartIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            SharedPreferences sp=getSharedPreferences("Login", MODE_PRIVATE);
+                            SharedPreferences.Editor Ed=sp.edit();
+                            Ed.putString("email",loper.email);
+                            Ed.putString("wachtwoord",loper.wachtwoord);
+                            Ed.apply();
                             startActivity(kaartIntent);
                         } else {
                             AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
@@ -95,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
                             dlgAlert.create().show();
                         }
                     }
-
                 } catch (Exception exeption) {
                     AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
                     dlgAlert.setMessage("Het inloggen is mislukt.");

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -219,6 +220,9 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             Intent uitloggen = new Intent(getApplicationContext(), uitgelogd.class);
             uitloggen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             Aanmelden.getInstance().BooleanToast = true;
+            SharedPreferences preferences = getSharedPreferences("Login", MODE_PRIVATE);
+            preferences.edit().remove("email").apply();
+            preferences.edit().remove("wachtwoord").apply();
             startActivity(uitloggen);
         } else if (id == R.id.nav_help) {
             Intent help = new Intent(getApplicationContext(), help.class);
