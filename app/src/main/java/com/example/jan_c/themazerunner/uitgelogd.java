@@ -36,19 +36,8 @@ public class uitgelogd extends AppCompatActivity {
                     }
                 }, 1000);
 
-
-
-
-
             }
         }, 1500);
-
-
-
-
-
-
-
 
     }
     @Override
