@@ -11,13 +11,6 @@
     tools:context="com.example.jan_c.themazerunner.RegistrerenActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -36,13 +29,15 @@
 
                 <EditText
                     android:id="@+id/NaamEditText"
-                    android:layout_width="match_parent"
+                    android:layout_width="242dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:layout_gravity="center"
                     android:hint="@string/prompt_naam"
                     android:inputType="textPersonName"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -52,12 +47,14 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/EmailEditText"
-                    android:layout_width="match_parent"
+                    android:layout_width="242dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
+                    android:layout_gravity="center"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -67,15 +64,17 @@
 
                 <EditText
                     android:id="@+id/WachtwoordEditText"
-                    android:layout_width="match_parent"
+                    android:layout_width="242dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
+                    android:layout_gravity="center"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:drawableLeft="@drawable/ic_lock_black_24dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -86,7 +85,17 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:text="Registreren"
-                android:textStyle="bold" />
+                android:background="@drawable/button"
+                android:textColor="@color/white"/>
+
+            <ProgressBar
+                android:id="@+id/registreren_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="242dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:visibility="invisible" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

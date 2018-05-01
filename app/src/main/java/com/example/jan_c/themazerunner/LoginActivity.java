@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                             dlgAlert.setCancelable(false);
                             dlgAlert.create().show();
                         }
+                        inloggenProgressBar.setVisibility(View.INVISIBLE);
                     }
                 } catch (Exception exeption) {
                     AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);

@@ -21,6 +21,14 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_marginTop="40dp"
+        android:layout_width="281dp"
+        android:layout_height="119dp"
+        app:srcCompat="@drawable/tmrlogo"
+        android:layout_marginBottom="40dp"/>
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -38,8 +46,10 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
-                    android:layout_width="match_parent"
+                    android:layout_width="242dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -53,8 +63,10 @@
 
                 <EditText
                     android:id="@+id/password"
-                    android:layout_width="match_parent"
+                    android:layout_width="242dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableLeft="@drawable/ic_lock_black_24dp"
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -71,23 +83,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:autoText="false"
+                android:background="@drawable/button"
                 android:text="Inloggen"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/RegistrerenButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button"
                 android:text="Registreren"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
+                android:textColor="@color/white" />
 
             <ProgressBar
                 android:id="@+id/inloggenProgressbar"
                 style="?android:attr/progressBarStyle"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -97,5 +111,6 @@
         android:id="@+id/imageView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:srcCompat="@drawable/loginfoto1" />
 </LinearLayout>
