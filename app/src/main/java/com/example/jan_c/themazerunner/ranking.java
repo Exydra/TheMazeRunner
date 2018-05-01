@@ -95,7 +95,7 @@ public class ranking extends AppCompatActivity {
                CustomAdapter customAdapter = new CustomAdapter();
                 theListView.setAdapter(customAdapter);
 
-                 Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+" is geselecteerd.",Toast.LENGTH_LONG).show();
+                 //Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+" is geselecteerd.",Toast.LENGTH_LONG).show();
 
            // code hier voor eigen tijd bij route
             TotaalTijdUitlezen totaalTijdUitlezen = new TotaalTijdUitlezen(parcourDictionary.get(position),Aanmelden.getInstance().loper.loperID);
