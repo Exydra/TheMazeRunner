@@ -39,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
@@ -332,6 +333,8 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                 } catch (ExecutionException e) {
                                     e.printStackTrace();
                                 }
+                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                Toast.makeText(getBaseContext(),"U heeft de marker bereikt",Toast.LENGTH_LONG).show();
                                 couterMarkers += 1;
                             }
                         }
@@ -384,7 +387,12 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                 } else {
                     timer.cancel();
                     // Hier felicitatieboodschap
-
+                    LatLngBounds.Builder latLngBounds;
+                    latLngBounds = new LatLngBounds.Builder();
+                    for (Integer i = 0; i< lijstmarkers.size();i++) {
+                                latLngBounds.include(lijstmarkers.get(i).locatie);
+                    }
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
                     LayoutInflater inflater = getLayoutInflater();
                     View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
                     Toast toast = new Toast(getApplicationContext());
