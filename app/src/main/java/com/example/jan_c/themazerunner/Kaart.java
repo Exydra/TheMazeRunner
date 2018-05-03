@@ -239,7 +239,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     startActivity(ranking);
 
                 }
-            }, 2000);
+            }, 1000);
 
 
         }
@@ -256,6 +256,13 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         mMap = googleMap;
         //timer
         final TextView timerText = findViewById(R.id.timerTekst);
+        loader.setVisibility(View.VISIBLE);
+        Handler handler2 = new Handler();
+        handler2.postDelayed(new Runnable() {
+            public void run() {
+                loader.setVisibility(View.INVISIBLE);
+            }
+        }, 1000);
         timer = new CountDownTimer(2000000000, 3000) {
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
@@ -343,7 +350,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                 couterMarkers += 1;
                             }
                         }
-                        if(!geenLocatieError & Aanmelden.getInstance().BooleanToast == false) {
+                        if(!geenLocatieError & Aanmelden.getInstance().BooleanToast == false & loader.getVisibility() == View.INVISIBLE) {
                             //BegroetingsToast
                             Calendar c = Calendar.getInstance();
                             int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
