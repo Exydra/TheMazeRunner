@@ -292,7 +292,13 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                         if (routeID != 0) {
                             volgendePuntTextView.setVisibility(View.VISIBLE);
                             if (huidigeLocatie != null) {
-                                GepaseerdePunten.add(huidigeLocatie);
+                                if(GepaseerdePunten.size() == 0){
+                                    GepaseerdePunten.add(huidigeLocatie);
+                                } else {
+                                    if (afstand(huidigeLocatie, GepaseerdePunten.get(GepaseerdePunten.size() - 1)) > 0.020) {
+                                        GepaseerdePunten.add(huidigeLocatie);
+                                    }
+                                }
                             }
                             //plaatst de polyline met de gepaseerde punten op de kaart
                             if (GepaseerdePunten.size() != 0) {
@@ -301,7 +307,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                 );
                             }
                             stylePolyline(Gepaseerd);
-
                             //plaatst de marker op de kaart
                             marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
 
@@ -379,7 +384,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                             dialog.cancel();
                                         }
                                     });
-
                             AlertDialog alert11 = builder1.create();
                             alert11.show();
                         }
@@ -402,18 +406,11 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     toastTekst = (TextView) toast.getView().findViewById(R.id.toast_text);
                     toastTekst.setText("Gefeliciteerd, de route is geslaagd!");
                     toast.show();
-
-
                 }
-
             }
-
             public void onFinish() {
             }
-
         }.start();
-
-
     }
 
     //stelt de stijl van de polyline in
