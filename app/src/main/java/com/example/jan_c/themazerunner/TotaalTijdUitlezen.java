@@ -18,9 +18,11 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
     String data = "";
     Integer _parcourID;
     Integer _loperID;
-    String totaaltijd;
     String error = "";
+    Tijd tijd;
+    Tijd eigenscore;
     public TotaalTijdUitlezen(Integer parcourID, Integer loperID){
+        tijd = new Tijd();
         _parcourID = parcourID;
         _loperID = loperID;
     }
@@ -37,22 +39,39 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
                 line = bufferedReader.readLine();
                 data = data + line;
             }
-            if (HTMLtoJSON(data).equals("00:00:00")){
-                error = HTMLtoJSON(data);
-            }
+
             data = HTMLtoJSON(data);
-            totaaltijd = data;
+          //  totaaltijd = data;
+            JSONArray JA = new JSONArray(data);
+            for (int i = 0; i < JA.length(); i++) {
+
+                JSONObject JO = (JSONObject) JA.get(i);
+                eigenscore = new Tijd();
+                eigenscore.stand = (Integer) JO.get("Stand");
+                eigenscore.tijd = JO.get("Totaaltijd").toString();
+
+
+            }
+            if (eigenscore.tijd.equals("00:00:00")){
+                error = eigenscore.tijd;
+            } else {
+                tijd.stand = eigenscore.stand;
+                tijd.tijd = eigenscore.tijd;
+            }
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     public String HTMLtoJSON(String HTML){
-        Integer begin = HTML.indexOf("%") + 3;
-        Integer einde = HTML.indexOf("$")-2;
+        Integer begin = HTML.indexOf("%") + 1;
+        Integer einde = HTML.indexOf("$");
         String JSON = HTML.substring(begin, einde).trim();
         return JSON;
     }

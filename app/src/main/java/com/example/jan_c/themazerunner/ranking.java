@@ -35,6 +35,7 @@ public class ranking extends AppCompatActivity {
     TextView nummerTextview;
     TextView errorTextview;
     TextView uwscore;
+    TextView standTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class ranking extends AppCompatActivity {
         nummerTextview = (TextView) findViewById(R.id.nummerTextView);
         errorTextview = (TextView) findViewById(R.id.errorTextview);
         uwscore = (TextView) findViewById(R.id.UwScoreTextView);
+        standTextView = (TextView) findViewById(R.id.nummerTextView);
 
         getParcoursUitlezen getParcoursUitlezen = new getParcoursUitlezen();
         parcourDictionary = new Hashtable<>();
@@ -123,7 +125,8 @@ public class ranking extends AppCompatActivity {
                     nummerTextview.setVisibility(View.VISIBLE);
                     uwscore.setVisibility(View.VISIBLE);
               naamTextview.setText(Aanmelden.getInstance().loper.naam);
-                tijdTextview.setText(totaalTijdUitlezen.totaaltijd);
+                tijdTextview.setText(totaalTijdUitlezen.tijd.tijd);
+                    standTextView.setText(totaalTijdUitlezen.tijd.stand.toString());
             }}
 
             @Override
