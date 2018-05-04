@@ -331,8 +331,8 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                     }
                             //berekend afstand tot volgende punt
                             Double afstand = afstand(huidigeLocatie,marker.getPosition());
-                            DecimalFormat decimalFormat = new DecimalFormat("#0.000");
-                            afstandTotVolgendePuntTextView.setText(decimalFormat.format(afstand));
+                            DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+                            afstandTotVolgendePuntTextView.setText(decimalFormat.format(afstand)+" km");
 
                             //kijkt of de loper aan de marker is
                             if (afstand(huidigeLocatie, marker.getPosition()) < 0.020) {
