@@ -404,6 +404,9 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                 latLngBounds.include(lijstmarkers.get(i).locatie);
                     }
                     mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
+                    afstandTotVolgendePuntTextView.setVisibility(View.INVISIBLE);
+                    volgendePuntTextView.setVisibility(View.INVISIBLE);
+                    PauzeButton.setVisibility(View.INVISIBLE);
                     LayoutInflater inflater = getLayoutInflater();
                     View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
                     Toast toast = new Toast(getApplicationContext());
