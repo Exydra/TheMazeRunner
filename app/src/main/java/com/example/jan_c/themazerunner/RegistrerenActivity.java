@@ -75,7 +75,7 @@ public class RegistrerenActivity extends AppCompatActivity {
                                 try {
                                     registrerenUitschrijven.execute().get();
 
-                                    if (registrerenUitschrijven.error.equals("Dit e-mail adres word al reeds gebruikt , gelieven een ander optegeven of inteloggen met uw bestaande."))
+                                    if (registrerenUitschrijven.error.equals("Dit e-mail adres word al reeds gebruikt , gelieven een andere te gebruiken of u aanmelden met uw reeds bestaande."))
                                     {
                                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
                                         dlgAlert.setMessage("Dit e-mail adres bestaat al.");
