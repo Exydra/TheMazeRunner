@@ -216,7 +216,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_logout) {
-        // uitloggen & variabelen resetten
+        // uitloggen & variabelen resettens
             Aanmelden.instance = null;
             Intent uitloggen = new Intent(getApplicationContext(), uitgelogd.class);
             uitloggen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -224,6 +224,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             SharedPreferences preferences = getSharedPreferences("Login", MODE_PRIVATE);
             preferences.edit().remove("email").apply();
             preferences.edit().remove("wachtwoord").apply();
+            timer.cancel();
             startActivity(uitloggen);
         } else if (id == R.id.nav_help) {
             Intent help = new Intent(getApplicationContext(), help.class);
