@@ -401,6 +401,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             alert11.show();
                         }
                     }
+                    //
                 } else {
                     timer.cancel();
                     // Hier felicitatieboodschap
