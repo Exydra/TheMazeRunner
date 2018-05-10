@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,6 +97,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     final static int ZOOM_MAX = 21;
     private Fragment map;
     private ProgressBar loader;
+    private RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +176,8 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         volgendePuntTextView = findViewById(R.id.VolgendePuntTextview);
         volgendePuntTextView.setVisibility(View.INVISIBLE);
         map = getSupportFragmentManager().findFragmentById(R.id.map);
+        relativeLayout = findViewById(R.id.relativeLayout3);
+
     }
 
     @Override
@@ -299,6 +303,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                         //plaatst de gepaseerde punten in een lijst
                         if (routeID != 0) {
                             volgendePuntTextView.setVisibility(View.VISIBLE);
+                            relativeLayout.setVisibility(View.VISIBLE);
                             if (huidigeLocatie != null) {
                                 if(GepaseerdePunten.size() == 0){
                                     GepaseerdePunten.add(huidigeLocatie);
@@ -408,6 +413,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     afstandTotVolgendePuntTextView.setVisibility(View.INVISIBLE);
                     volgendePuntTextView.setVisibility(View.INVISIBLE);
                     PauzeButton.setVisibility(View.INVISIBLE);
+                    relativeLayout.setVisibility(View.GONE);
                     LayoutInflater inflater = getLayoutInflater();
                     View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_root));
                     Toast toast = new Toast(getApplicationContext());
