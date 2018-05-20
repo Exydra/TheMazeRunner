@@ -42,6 +42,7 @@
         </activity>
         <activity
             android:name=".RoutesKiezen"
+            android:label="Routes"
             android:screenOrientation="portrait" />
         <activity
             android:name=".RegistrerenActivity"
@@ -53,8 +54,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ranking"
+            android:label="Ranking"
             android:screenOrientation="portrait"/>
         <activity android:name=".help"
+            android:label="Help"
             android:screenOrientation="portrait"/>
         <activity android:name=".uitgelogd"
             android:screenOrientation="portrait"></activity>

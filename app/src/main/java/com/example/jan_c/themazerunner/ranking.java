@@ -4,17 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -160,7 +155,7 @@ public class ranking extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.customlistview,null);
             TextView tijdTextView = (TextView)convertView.findViewById(R.id.TijdtextView);
-            TextView naamTextView = (TextView)convertView.findViewById(R.id.NaamtextView);
+            TextView naamTextView = (TextView)convertView.findViewById(R.id.NaamParcourtextView);
             TextView rankingTextView = (TextView)convertView.findViewById(R.id.RankingtextView);
 
             naamTextView.setText(naam[position]);
