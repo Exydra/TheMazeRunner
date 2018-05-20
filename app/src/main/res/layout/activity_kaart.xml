@@ -19,17 +19,19 @@
         android:layout_margin="0dp"
         android:layout_marginTop="48dp"
         tools:context="com.example.jan_c.themazerunner.Kaart" />
+
     <Button
         android:id="@+id/Pauzebutton"
         android:layout_width="127dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="13dp"
-        android:text="@string/bekijk"
-        android:background="@drawable/button"
-        android:textColor="@color/white"
         android:layout_marginBottom="5dp"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/button"
+        android:text="@string/bekijk"
+        android:textColor="@color/white"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.945"

@@ -304,6 +304,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                         if (routeID != 0) {
                             volgendePuntTextView.setVisibility(View.VISIBLE);
                             relativeLayout.setVisibility(View.VISIBLE);
+                            PauzeButton.setVisibility(View.VISIBLE);
                             if (huidigeLocatie != null) {
                                 if(GepaseerdePunten.size() == 0){
                                     GepaseerdePunten.add(huidigeLocatie);
