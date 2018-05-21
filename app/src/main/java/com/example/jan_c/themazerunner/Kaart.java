@@ -217,8 +217,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         if (id == R.id.nav_routes) {
             Intent routesKiezenIntent = new Intent(getApplicationContext(), RoutesKiezen.class);
             startActivity(routesKiezenIntent);
-        } else if (id == R.id.nav_manage) {
-
         } else if (id == R.id.nav_logout) {
         // uitloggen & variabelen resettens
             Aanmelden.instance = null;
