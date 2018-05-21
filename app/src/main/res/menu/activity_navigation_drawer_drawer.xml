@@ -14,7 +14,7 @@
             android:title="Ranking"/>
     </group>
 
-    <item android:title="communicatie">
+    <item android:title="Communicatie">
         <menu>
             <item
                 android:id="@+id/nav_help"
