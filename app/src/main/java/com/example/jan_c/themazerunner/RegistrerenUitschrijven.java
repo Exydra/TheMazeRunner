@@ -7,10 +7,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
+import java.net.UnknownHostException;
+import java.util.EmptyStackException;
+import java.util.concurrent.ExecutionException;
+
+public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void>{
     Loper loper;
     String data = "";
     String error = "";
+    String error2 = "";
     public  RegistrerenUitschrijven(String naam, String wachtwoord, String email){
         loper = new Loper();
         loper.naam = naam;
@@ -37,7 +42,8 @@ public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            error2 = "error";
+                e.printStackTrace();
         }
         return null;
     }

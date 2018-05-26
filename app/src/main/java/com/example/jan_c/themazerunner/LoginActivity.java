@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                     AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
                     dlgAlert.setMessage("Het inloggen is mislukt.");
                     dlgAlert.setTitle("Error");
+                    inloggenProgressBar.setVisibility(View.INVISIBLE);
                     dlgAlert.setPositiveButton("OK", null);
                     dlgAlert.setCancelable(false);
                     dlgAlert.create().show();

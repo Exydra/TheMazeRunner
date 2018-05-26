@@ -321,13 +321,13 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             toast.setView(layout);
                             toastTekst = (TextView) toast.getView().findViewById(R.id.toast_text);
                             if (timeOfDay >= 0 && timeOfDay < 12) {
-                                toastTekst.setText("Goedemorgen " + Aanmelden.getInstance().loper.naam + "!");
+                                toastTekst.setText("Goedemorgen " + Aanmelden.getInstance().loper.naam + " !");
                             } else if (timeOfDay >= 12 && timeOfDay < 16) {
-                                toastTekst.setText("Goedenmiddag " + Aanmelden.getInstance().loper.naam + "!");
+                                toastTekst.setText("Goedenmiddag " + Aanmelden.getInstance().loper.naam + " !");
                             } else if (timeOfDay >= 16 && timeOfDay < 21) {
-                                toastTekst.setText("Goedenavond " + Aanmelden.getInstance().loper.naam + "!");
+                                toastTekst.setText("Goedenavond " + Aanmelden.getInstance().loper.naam + " !");
                             } else if (timeOfDay >= 21 && timeOfDay < 24) {
-                                toastTekst.setText("Goede nacht " + Aanmelden.getInstance().loper.naam + "!");
+                                toastTekst.setText("Goede nacht " + Aanmelden.getInstance().loper.naam + " !");
                             }
                             Aanmelden.getInstance().BooleanToast = true;
                             toast.show();

@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import java.io.IOException;
+import java.util.EmptyStackException;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 public class RegistrerenActivity extends AppCompatActivity {
@@ -59,6 +62,9 @@ public class RegistrerenActivity extends AppCompatActivity {
                                 RegistrerenUitschrijven registrerenUitschrijven = new RegistrerenUitschrijven(naamEditText.getText().toString(), wachtWoordEditText.getText().toString(), emailEditText.getText().toString());
                                 try {
                                     registrerenUitschrijven.execute().get();
+                                    if (registrerenUitschrijven.error2.equals("error")){
+                                        throw new IOException();
+                                    }
                                     if (registrerenUitschrijven.error.equals("Dit e-mail adres word al reeds gebruikt , gelieven een andere te gebruiken of u aanmelden met uw reeds bestaande."))
                                     {
                                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
@@ -74,13 +80,27 @@ public class RegistrerenActivity extends AppCompatActivity {
                                         startActivity(loginActivity);
                                     }
                                 } catch (InterruptedException e) {
+                                    registrerernProgressBar.setVisibility(View.INVISIBLE);
                                     e.printStackTrace();
+                                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
+                                    dlgAlert.setMessage("Het registreren is mislukt.");
+                                    dlgAlert.setTitle("Error");
+                                    dlgAlert.setPositiveButton("OK", null);
+                                    dlgAlert.setCancelable(false);
+                                    dlgAlert.create().show();
                                 } catch (ExecutionException e) {
+                                    registrerernProgressBar.setVisibility(View.INVISIBLE);
                                     e.printStackTrace();
+                                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
+                                    dlgAlert.setMessage("Het registreren is mislukt.");
+                                    dlgAlert.setTitle("Error");
+                                    dlgAlert.setPositiveButton("OK", null);
+                                    dlgAlert.setCancelable(false);
+                                    dlgAlert.create().show();
                                 }
                             }}
-                            registrerernProgressBar.setVisibility(View.INVISIBLE);
                     }catch (Exception exeption){
+                        registrerernProgressBar.setVisibility(View.INVISIBLE);
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
                         dlgAlert.setMessage("Het registreren is mislukt.");
                         dlgAlert.setTitle("Error");
