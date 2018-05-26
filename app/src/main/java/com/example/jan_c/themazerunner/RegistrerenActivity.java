@@ -1,7 +1,5 @@
 package com.example.jan_c.themazerunner;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -10,13 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-
-/**
- * A login screen that offers login via email/password.
- */
 public class RegistrerenActivity extends AppCompatActivity {
     Button registrerenButton;
     EditText emailEditText;
@@ -35,8 +28,6 @@ public class RegistrerenActivity extends AppCompatActivity {
         naamEditText = (EditText) findViewById(R.id.NaamEditText);
         registrerernProgressBar = findViewById(R.id.registreren_progress);
     }
-
-
     class registrerenButtonClick implements View.OnClickListener {
         public void onClick(View view) {
             registrerernProgressBar.setVisibility(View.VISIBLE);
@@ -44,7 +35,6 @@ public class RegistrerenActivity extends AppCompatActivity {
             handler2.postDelayed(new Runnable() {
                 public void run() {
                     try {
-
                         if (Objects.equals(leeg, emailEditText.getText().toString()) | Objects.equals(leeg, wachtWoordEditText.getText().toString()) | Objects.equals(leeg, naamEditText.getText().toString()))
                         {
                             AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
@@ -53,11 +43,9 @@ public class RegistrerenActivity extends AppCompatActivity {
                             dlgAlert.setPositiveButton("OK", null);
                             dlgAlert.setCancelable(false);
                             dlgAlert.create().show();
-
                         }
                         else
                         if (emailTest(emailEditText.getText().toString()) == 0)
-
                         {
                             AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
                             dlgAlert.setMessage("Gelieve een correct e-mailadres in te vullen.");
@@ -66,15 +54,11 @@ public class RegistrerenActivity extends AppCompatActivity {
                             dlgAlert.setCancelable(false);
                             dlgAlert.create().show();
                         }
-
-
-
                         else {
                             {
                                 RegistrerenUitschrijven registrerenUitschrijven = new RegistrerenUitschrijven(naamEditText.getText().toString(), wachtWoordEditText.getText().toString(), emailEditText.getText().toString());
                                 try {
                                     registrerenUitschrijven.execute().get();
-
                                     if (registrerenUitschrijven.error.equals("Dit e-mail adres word al reeds gebruikt , gelieven een andere te gebruiken of u aanmelden met uw reeds bestaande."))
                                     {
                                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
@@ -89,16 +73,13 @@ public class RegistrerenActivity extends AppCompatActivity {
                                         Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
                                         startActivity(loginActivity);
                                     }
-
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 } catch (ExecutionException e) {
                                     e.printStackTrace();
                                 }
-
                             }}
                             registrerernProgressBar.setVisibility(View.INVISIBLE);
-
                     }catch (Exception exeption){
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
                         dlgAlert.setMessage("Het registreren is mislukt.");
@@ -107,19 +88,15 @@ public class RegistrerenActivity extends AppCompatActivity {
                         dlgAlert.setCancelable(false);
                         dlgAlert.create().show();
                     }
-
                 }
             }, 500);
         }
     }
-
     //controle email
     public int emailTest(String email) {
         Integer apenstaartje = email.toString().indexOf("@");
         Integer punt = email.toString().indexOf(".");
         Integer lengteEmail = email.toString().length();
-
-
         Integer Resultaat = 0;
         if (apenstaartje == -1 | punt == -1)
         {
@@ -135,12 +112,7 @@ public class RegistrerenActivity extends AppCompatActivity {
         if (punt - apenstaartje == 1) {Resultaat = 0;}
         // controle voor letters na het punt
         if (lengteEmail - punt == 1 | lengteEmail - punt == 2) {Resultaat = 0;}
-
         return Resultaat;
     }
-
-
-
-
 }
 

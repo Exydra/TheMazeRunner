@@ -1,13 +1,9 @@
 package com.example.jan_c.themazerunner;
-
 import android.os.AsyncTask;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,13 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-
 import static java.lang.Double.parseDouble;
-
-/**
- * Created by jan_c on 27/03/2018.
- */
-
 public class LijstMarkersUitlezen extends AsyncTask<Void,Void,Void> {
     String data = "";
     ArrayList<Marker> lijstmarkers;
@@ -66,7 +56,6 @@ public class LijstMarkersUitlezen extends AsyncTask<Void,Void,Void> {
         }
         return null;
     }
-
     public String HTMLtoJSON(String HTML){
         Integer begin = HTML.indexOf("%") + 2;
         Integer einde = HTML.indexOf("$")-1;

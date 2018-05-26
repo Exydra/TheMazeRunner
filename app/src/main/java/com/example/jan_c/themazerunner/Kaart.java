@@ -1,5 +1,4 @@
 package com.example.jan_c.themazerunner;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,35 +34,25 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Dot;
-import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
-import com.google.android.gms.maps.model.TileOverlay;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import static android.graphics.Color.rgb;
 import static java.lang.StrictMath.toRadians;
-
 public class Kaart extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
     private DrawerLayout mDrawerLayout;
     public double counter = 0;
@@ -74,10 +63,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     private Boolean gepauzeerd = false;
     private ArrayList<LatLng> GepaseerdePunten;
     private Polyline Gepaseerd;
-    private static final int PATTERN_GAP_LENGTH_PX = 20;
-    private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
-    private static final PatternItem DOT = new Dot();
-    private static final List<PatternItem> DOTTED = Arrays.asList(DOT, GAP);
     private Boolean geenLocatieError = false;
     private Integer routeID = 0;
     private  ArrayList<com.example.jan_c.themazerunner.Marker> lijstmarkers;
@@ -112,7 +97,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     public void onDrawerSlide(View drawerView, float slideOffset) {
                         // Respond when the drawer's position changes
                     }
-
                     @Override
                     public void onDrawerOpened(View drawerView) {
                         //Respond when the drawer's position open
@@ -121,12 +105,10 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                         emailTextview = findViewById(R.id.emailTextview);
                         emailTextview.setText(Aanmelden.getInstance().loper.email);
                     }
-
                     @Override
                     public void onDrawerClosed(View drawerView) {
                         // Respond when the drawer is closed
                     }
-
                     @Override
                     public void onDrawerStateChanged(int newState) {
                         // Respond when the drawer motion state changes
@@ -135,27 +117,22 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         );
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         PauzeButton = findViewById(R.id.Pauzebutton);
         PauzeButton.setOnClickListener(new PauzeButtonClick());
         GepaseerdePunten = new ArrayList<>();
-
         //zet de markers vann de gekozen route in een lijst
         routeID = getIntent().getIntExtra("parcourID", 0);
         if (routeID !=0){
@@ -170,16 +147,12 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             lijstmarkers = lijstMarkersUitlezen.lijstmarkers;
             aantalMarkers = lijstmarkers.size();
         }
-
-
         afstandTotVolgendePuntTextView = findViewById(R.id.afstandTextview);
         volgendePuntTextView = findViewById(R.id.VolgendePuntTextview);
         volgendePuntTextView.setVisibility(View.INVISIBLE);
         map = getSupportFragmentManager().findFragmentById(R.id.map);
         relativeLayout = findViewById(R.id.relativeLayout3);
-
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -189,14 +162,12 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation_drawer, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -206,14 +177,11 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         }
         return super.onOptionsItemSelected(item);
     }
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_routes) {
             Intent routesKiezenIntent = new Intent(getApplicationContext(), RoutesKiezen.class);
             startActivity(routesKiezenIntent);
@@ -243,19 +211,13 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
 
                 }
             }, 1000);
-
-
         }
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-
         mMap = googleMap;
         //timer
         final TextView timerText = findViewById(R.id.timerTekst);
@@ -269,25 +231,20 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         timer = new CountDownTimer(2000000000, 3000) {
             @SuppressLint("SetTextI18n")
             public void onTick(long millisUntilFinished) {
-
                 //controleeerd of de loper nog niet is gefinisht
                 if (couterMarkers != aantalMarkers) {
-
                     timerText.setText(String.valueOf(counter));
                     counter += 1;
                     try {
-
                         // zet locatie aan als er toesteming is
                         if ((ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(Kaart.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                             mMap.setMyLocationEnabled(true);
                         }
-
                         //huidige locatie
                         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                         Criteria criteria = new Criteria();
                          myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
                         huidigeLocatie = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-
                         //update camera postie als er niet is gepauzeerd
                         if (!gepauzeerd & routeID==0) {
                              CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -297,7 +254,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                                     .build();
                             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                         }
-
                         //plaatst de gepaseerde punten in een lijst
                         if (routeID != 0) {
                             volgendePuntTextView.setVisibility(View.VISIBLE);
@@ -321,7 +277,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             stylePolyline(Gepaseerd);
                             //plaatst de marker op de kaart
                             marker = mMap.addMarker(new MarkerOptions().position(lijstmarkers.get(couterMarkers).locatie));
-
                             if(!gepauzeerd){
                                  bounds = LatLngBounds.builder ()
                                         .include(huidigeLocatie)
@@ -338,7 +293,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             Double afstand = afstand(huidigeLocatie,marker.getPosition());
                             DecimalFormat decimalFormat = new DecimalFormat("#0.00");
                             afstandTotVolgendePuntTextView.setText(decimalFormat.format(afstand)+" km");
-
                             //kijkt of de loper aan de marker is
                             if (afstand(huidigeLocatie, marker.getPosition()) < 0.020) {
                                 //update time
@@ -375,13 +329,9 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                             } else if (timeOfDay >= 21 && timeOfDay < 24) {
                                 toastTekst.setText("Goede nacht " + Aanmelden.getInstance().loper.naam + "!");
                             }
-
-
                             Aanmelden.getInstance().BooleanToast = true;
                             toast.show();
-
                         }
-                        //handelt de exeption af
                     } catch (Exception Locatie) {
                         if (!geenLocatieError) {
                             geenLocatieError = true;
@@ -403,7 +353,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
                     //
                 } else {
                     timer.cancel();
-                    // Hier felicitatieboodschap
                     LatLngBounds.Builder latLngBounds;
                     latLngBounds = new LatLngBounds.Builder();
                     for (Integer i = 0; i< lijstmarkers.size();i++) {
@@ -429,7 +378,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             }
         }.start();
     }
-
     //stelt de stijl van de polyline in
     private void stylePolyline(Polyline polyline) {
         polyline.setWidth(20);
@@ -438,7 +386,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         polyline.setEndCap(new RoundCap());
         polyline.setStartCap(new RoundCap());
     }
-
     //berekend de afstand tussen 2 punten
     public double afstand(LatLng p1, LatLng p2) {
         double R = 6371;
@@ -454,8 +401,6 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
     public static double haversin(double val) {
         return Math.pow(Math.sin(val / 2), 2);
     }
-
-
     //click event zodat de camera uitzoemt en niet meer volgt
     class PauzeButtonClick implements View.OnClickListener {
         public void onClick(View view) {
@@ -476,6 +421,7 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
             }
         }
     }
+    //berekend opnimaal zoomLevel
     public int getBoundsZoomLevel(LatLng northeast,LatLng southwest,
                                        int width, int height) {
         double latFraction = (latRad(northeast.latitude) - latRad(southwest.latitude)) / Math.PI;
@@ -495,6 +441,4 @@ public class Kaart extends AppCompatActivity implements NavigationView.OnNavigat
         final double LN2 = .693147180559945309417;
         return (Math.log(mapPx / worldPx / fraction) / LN2);
     }
-
-
 }

@@ -1,5 +1,4 @@
 package com.example.jan_c.themazerunner;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,12 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-
 import java.util.Objects;
-
-/**
- * A login screen that offers login via email/password.
- */
 public class LoginActivity extends AppCompatActivity {
     private Button inlogButton;
     private Button registrereButton;
@@ -58,26 +52,17 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(kaartIntent);
         }
     }
-
-
-
     class inlogButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-
-
-
             //controleert of er locatie promision is
             if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 requestCameraPermission();
             } else {
-
-
                 inloggenProgressBar.setVisibility(View.VISIBLE);
                 Handler handler2 = new Handler();
                 handler2.postDelayed(new Runnable() {
                     public void run() {
-
                 //logt de loper in
                 try {
                     if (Objects.equals(leeg, emailEditText.getText().toString()) | Objects.equals(leeg, passwoordEditText.getText().toString())) {
@@ -126,17 +111,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
     //opent regestreer pagina
     class registrerenButtonClick implements View.OnClickListener {
         public void onClick(View view) {
-
                 Intent RegistrerenActivity = new Intent(getApplicationContext(), RegistrerenActivity.class);
                 startActivity(RegistrerenActivity);
-
         }
     }
-
     //vraagt om permission en stelt deze in
     private void requestCameraPermission() {
         Snackbar.make(mLayout, "Deze app heeft heeft locatie nodig",
@@ -149,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }).show();
-
     }
 }
 

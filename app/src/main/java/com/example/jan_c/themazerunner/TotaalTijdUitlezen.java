@@ -1,11 +1,8 @@
 package com.example.jan_c.themazerunner;
-
 import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +10,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
     String data = "";
     Integer _parcourID;
@@ -39,7 +35,6 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
                 line = bufferedReader.readLine();
                 data = data + line;
             }
-
             data = HTMLtoJSON(data);
           //  totaaltijd = data;
             JSONArray JA = new JSONArray(data);
@@ -49,8 +44,6 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
                 eigenscore = new Tijd();
                 eigenscore.stand = (Integer) JO.get("Stand");
                 eigenscore.tijd = JO.get("Totaaltijd").toString();
-
-
             }
             if (eigenscore.tijd.equals("00:00:00")){
                 error = eigenscore.tijd;
@@ -58,7 +51,6 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
                 tijd.stand = eigenscore.stand;
                 tijd.tijd = eigenscore.tijd;
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -68,7 +60,6 @@ public class TotaalTijdUitlezen extends AsyncTask<Void,Void,Void> {
         }
         return null;
     }
-
     public String HTMLtoJSON(String HTML){
         Integer begin = HTML.indexOf("%") + 1;
         Integer einde = HTML.indexOf("$");

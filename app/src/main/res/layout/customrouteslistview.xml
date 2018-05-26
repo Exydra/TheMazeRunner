@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
         android:id="@+id/NaamParcourtextView"
         android:layout_width="wrap_content"
@@ -14,7 +13,6 @@
         android:text="TextView"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp" />
-
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
@@ -24,7 +22,6 @@
         android:layout_marginTop="59dp"
         android:text="Afstand:"
         android:textSize="18sp" />
-
     <TextView
         android:id="@+id/AfstandParcourTextview"
         android:layout_width="wrap_content"
@@ -34,7 +31,6 @@
         android:layout_marginStart="95dp"
         android:text="TextView"
         android:textSize="18sp" />
-
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
@@ -44,7 +40,6 @@
         android:layout_marginEnd="144dp"
         android:text="Tijd:"
         android:textSize="18sp" />
-
     <TextView
         android:id="@+id/TijdParcourTextView"
         android:layout_width="wrap_content"

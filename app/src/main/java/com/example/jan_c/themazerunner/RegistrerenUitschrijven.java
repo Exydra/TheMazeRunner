@@ -1,9 +1,5 @@
 package com.example.jan_c.themazerunner;
-
 import android.os.AsyncTask;
-
-import org.json.JSONException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +7,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-/**
- * Created by jan_c on 25/03/2018.
- */
-
 public class RegistrerenUitschrijven extends AsyncTask<Void,Void,Void> {
     Loper loper;
     String data = "";

@@ -1,11 +1,8 @@
 package com.example.jan_c.themazerunner;
-
 import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-
-/**
- * Created by jan_c on 31/03/2018.
- */
-
 public class getParcoursUitlezen extends AsyncTask<Void,Void,Void> {
   String data = "";
    ArrayList<Parcour> parcours;
@@ -42,7 +34,6 @@ public class getParcoursUitlezen extends AsyncTask<Void,Void,Void> {
             data = HTMLtoJSON(data);
             JSONArray JA = new JSONArray(data);
             for (int i = 0; i < JA.length(); i++) {
-
                 JSONObject JO = (JSONObject) JA.get(i);
                 Parcour parcour = new Parcour();
                 parcour.parcourID = (Integer) JO.get("ParcourID");

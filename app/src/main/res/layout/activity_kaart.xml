@@ -6,8 +6,6 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     tools:context="com.example.jan_c.themazerunner.LoginActivity">
-
-
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -19,7 +17,6 @@
         android:layout_margin="0dp"
         android:layout_marginTop="48dp"
         tools:context="com.example.jan_c.themazerunner.Kaart" />
-
     <Button
         android:id="@+id/Pauzebutton"
         android:layout_width="127dp"
@@ -38,7 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.833" />
-
     <RelativeLayout
         android:id="@+id/relativeLayout3"
         android:layout_width="207dp"
@@ -48,7 +44,6 @@
         android:layout_marginStart="0dp"
         android:background="@drawable/volgendepunt"
         android:visibility="gone">
-
         <TextView
             android:id="@+id/VolgendePuntTextview"
             android:layout_width="wrap_content"
@@ -65,7 +60,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.794" />
-
         <TextView
             android:id="@+id/afstandTextview"
             android:layout_width="wrap_content"
@@ -81,9 +75,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.835" />
-
     </RelativeLayout>
-
     <TextView
         android:id="@+id/timerTekst"
         android:layout_width="125dp"
@@ -99,7 +91,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.944" />
-
     <ProgressBar
         android:id="@+id/klassementProgressbar"
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"

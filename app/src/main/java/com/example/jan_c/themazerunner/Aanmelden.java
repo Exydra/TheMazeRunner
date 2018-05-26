@@ -1,8 +1,5 @@
 package com.example.jan_c.themazerunner;
-
-
 import java.util.concurrent.ExecutionException;
-
 public class Aanmelden   {
     String _email;
     String _password;
@@ -12,9 +9,7 @@ public class Aanmelden   {
     private Aanmelden(){
         loper = new Loper();
     }
-
     static Aanmelden instance = null;
-
     public static Aanmelden getInstance()  {
         if(instance == null) {
             instance = new Aanmelden();
