@@ -31,7 +31,8 @@
                     android:hint="@string/prompt_naam"
                     android:inputType="textPersonName"
                     android:singleLine="true"
-                    android:drawableLeft="@drawable/ic_person_black_24dp"/>
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:imeOptions="actionNext"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:drawableLeft="@drawable/ic_email_black_24dp"/>
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:imeOptions="actionNext"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -57,12 +59,12 @@
                     android:hint="@string/prompt_password"
                     android:layout_gravity="center"
                     android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:drawableLeft="@drawable/ic_lock_black_24dp"/>
+                    android:imeActionLabel="Registreren"
+                    android:drawableLeft="@drawable/ic_lock_black_24dp"
+                    android:imeOptions="actionUnspecified"/>
             </android.support.design.widget.TextInputLayout>
             <Button
                 android:id="@+id/RegistrerenButton"
