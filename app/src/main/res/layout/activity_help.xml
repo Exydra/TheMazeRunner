@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/textView4"
                     android:layout_below="@id/textView8"
-                    android:text="Dat betekend dat wij geen toegang hebben tot jouw huidige locatie. Dit kan je in de instellingen van je smartphone wijzigen. De melding gaat weg van zodra er een locatie is gevonden, anders kan je niet spelen." />
+                    android:text="Dat betekent dat wij geen toegang hebben tot jouw huidige locatie. Dit kan je in de instellingen van je smartphone wijzigen. De melding gaat weg van zodra er een locatie is gevonden, anders kan je niet spelen." />
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"

@@ -57,6 +57,15 @@ public class RegistrerenActivity extends AppCompatActivity {
                             dlgAlert.setCancelable(false);
                             dlgAlert.create().show();
                         }
+                        else if (naamEditText.getText().length() > 10){
+                            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
+                            dlgAlert.setMessage("Gelieve een naam op te geven met maximaal 10 tekens ");
+                            dlgAlert.setTitle("Error");
+                            dlgAlert.setPositiveButton("OK", null);
+                            dlgAlert.setCancelable(false);
+                            dlgAlert.create().show();
+                            registrerernProgressBar.setVisibility(View.INVISIBLE);
+                        }
                         else {
                             {
                                 RegistrerenUitschrijven registrerenUitschrijven = new RegistrerenUitschrijven(naamEditText.getText().toString(), wachtWoordEditText.getText().toString(), emailEditText.getText().toString());
@@ -98,7 +107,8 @@ public class RegistrerenActivity extends AppCompatActivity {
                                     dlgAlert.setCancelable(false);
                                     dlgAlert.create().show();
                                 }
-                            }}
+                            }
+                            }
                     }catch (Exception exeption){
                         registrerernProgressBar.setVisibility(View.INVISIBLE);
                         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(RegistrerenActivity.this);
